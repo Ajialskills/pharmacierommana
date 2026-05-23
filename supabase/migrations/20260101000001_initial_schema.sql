@@ -2,9 +2,6 @@
 -- 001 Initial schema — Pharmacie Rommana
 -- ─────────────────────────────────────────────
 
--- Extensions
-create extension if not exists "uuid-ossp";
-
 -- ── Profiles (extends Supabase Auth users) ──
 create table public.profiles (
   id          uuid primary key references auth.users(id) on delete cascade,
@@ -18,7 +15,7 @@ create table public.profiles (
 
 -- ── Categories ──
 create table public.categories (
-  id          uuid primary key default uuid_generate_v4(),
+  id          uuid primary key default gen_random_uuid(),
   slug        text not null unique,
   name        text not null,
   parent_id   uuid references public.categories(id) on delete set null,
@@ -30,7 +27,7 @@ create table public.categories (
 
 -- ── Brands ──
 create table public.brands (
-  id          uuid primary key default uuid_generate_v4(),
+  id          uuid primary key default gen_random_uuid(),
   slug        text not null unique,
   name        text not null,
   logo_url    text,
@@ -41,7 +38,7 @@ create table public.brands (
 
 -- ── Products ──
 create table public.products (
-  id                  uuid primary key default uuid_generate_v4(),
+  id                  uuid primary key default gen_random_uuid(),
   slug                text not null unique,
   name                text not null,
   brand_id            uuid references public.brands(id) on delete set null,
@@ -62,7 +59,7 @@ create table public.products (
 
 -- ── Articles (Le Carnet) ──
 create table public.articles (
-  id              uuid primary key default uuid_generate_v4(),
+  id              uuid primary key default gen_random_uuid(),
   slug            text not null unique,
   title           text not null,
   excerpt         text,
@@ -77,7 +74,7 @@ create table public.articles (
 
 -- ── Addresses ──
 create table public.addresses (
-  id          uuid primary key default uuid_generate_v4(),
+  id          uuid primary key default gen_random_uuid(),
   user_id     uuid not null references auth.users(id) on delete cascade,
   label       text,
   line1       text not null,
@@ -92,7 +89,7 @@ create table public.addresses (
 
 -- ── Orders ──
 create table public.orders (
-  id               uuid primary key default uuid_generate_v4(),
+  id               uuid primary key default gen_random_uuid(),
   user_id          uuid references auth.users(id) on delete set null,
   status           text not null default 'pending'
                    check (status in ('pending','confirmed','processing','shipped','delivered','cancelled','refunded')),
@@ -114,7 +111,7 @@ create table public.orders (
 
 -- ── Order Items ──
 create table public.order_items (
-  id             uuid primary key default uuid_generate_v4(),
+  id             uuid primary key default gen_random_uuid(),
   order_id       uuid not null references public.orders(id) on delete cascade,
   product_id     uuid references public.products(id) on delete set null,
   product_name   text not null,
@@ -126,7 +123,7 @@ create table public.order_items (
 
 -- ── Cart Items ──
 create table public.cart_items (
-  id          uuid primary key default uuid_generate_v4(),
+  id          uuid primary key default gen_random_uuid(),
   user_id     uuid not null references auth.users(id) on delete cascade,
   product_id  uuid not null references public.products(id) on delete cascade,
   quantity    int not null default 1,
@@ -136,7 +133,7 @@ create table public.cart_items (
 
 -- ── Wishlist Items ──
 create table public.wishlist_items (
-  id          uuid primary key default uuid_generate_v4(),
+  id          uuid primary key default gen_random_uuid(),
   user_id     uuid not null references auth.users(id) on delete cascade,
   product_id  uuid not null references public.products(id) on delete cascade,
   created_at  timestamptz not null default now(),
@@ -145,7 +142,7 @@ create table public.wishlist_items (
 
 -- ── Testimonials ──
 create table public.testimonials (
-  id               uuid primary key default uuid_generate_v4(),
+  id               uuid primary key default gen_random_uuid(),
   author_name      text not null,
   author_initials  text not null,
   body             text not null,
@@ -159,7 +156,7 @@ create table public.testimonials (
 
 -- ── Pharmacie de Garde ──
 create table public.pharmacie_de_garde (
-  id               uuid primary key default uuid_generate_v4(),
+  id               uuid primary key default gen_random_uuid(),
   week_start_date  date not null,
   pdf_url          text not null,
   uploaded_at      timestamptz not null default now()
@@ -167,7 +164,7 @@ create table public.pharmacie_de_garde (
 
 -- ── Loyalty Points ──
 create table public.loyalty_points (
-  id          uuid primary key default uuid_generate_v4(),
+  id          uuid primary key default gen_random_uuid(),
   user_id     uuid not null references auth.users(id) on delete cascade unique,
   points      int not null default 0,
   updated_at  timestamptz not null default now()
