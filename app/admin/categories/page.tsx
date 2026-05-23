@@ -1,3 +1,7 @@
-export default function Page() {
-  return <main className="p-8"><p>Admin Catégories — à venir</p></main>;
+import { getCategories } from "@/app/actions/categories";
+import CategoriesManager from "@/components/admin/CategoriesManager";
+
+export default async function AdminCategoriesPage() {
+  const categories = await getCategories();
+  return <CategoriesManager categories={categories} />;
 }
