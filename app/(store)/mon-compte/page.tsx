@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import MonCompteClient from "./MonCompteClient";
+import { getUserOrdersByEmail } from "@/app/actions/order";
 
 export default async function MonComptePage() {
   const supabase = await createClient();
@@ -8,9 +9,11 @@ export default async function MonComptePage() {
 
   if (!user) redirect("/connexion");
 
+  const orders = await getUserOrdersByEmail(user.email ?? "");
+
   return (
     <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-10">
-      <MonCompteClient user={user} />
+      <MonCompteClient user={user} orders={orders} />
     </div>
   );
 }

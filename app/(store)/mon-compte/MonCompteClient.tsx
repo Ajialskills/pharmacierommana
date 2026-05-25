@@ -4,11 +4,13 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
+import type { UserOrder } from "@/app/actions/order";
 
 type Tab = "overview" | "orders" | "profile" | "security";
 
 interface Props {
   user: User;
+  orders: UserOrder[];
 }
 
 const TABS: { id: Tab; label: string }[] = [
@@ -18,7 +20,7 @@ const TABS: { id: Tab; label: string }[] = [
   { id: "security", label: "Sécurité" },
 ];
 
-export default function MonCompteClient({ user }: Props) {
+export default function MonCompteClient({ user, orders }: Props) {
   const router = useRouter();
   const [tab, setTab] = useState<Tab>("overview");
   const [loading, setLoading] = useState(false);
@@ -80,27 +82,43 @@ export default function MonCompteClient({ user }: Props) {
       {/* Content */}
       {tab === "overview" && (
         <div className="grid sm:grid-cols-2 gap-4">
-          {[
-            { label: "Commandes", value: "—", href: () => setTab("orders") },
-            { label: "Favoris", value: "—", href: null },
-          ].map((card) => (
-            <button
-              key={card.label}
-              onClick={card.href ?? undefined}
-              className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-6 text-left hover:shadow-md transition-shadow"
-            >
-              <p className="text-xs font-semibold text-[var(--color-on-surface-variant)] uppercase tracking-wide mb-1">{card.label}</p>
-              <p className="text-2xl font-bold text-[var(--color-primary)]">{card.value}</p>
-            </button>
-          ))}
+          <button
+            onClick={() => setTab("orders")}
+            className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-6 text-left hover:shadow-md transition-shadow"
+          >
+            <p className="text-xs font-semibold text-[var(--color-on-surface-variant)] uppercase tracking-wide mb-1">Commandes</p>
+            <p className="text-2xl font-bold text-[var(--color-primary)]">{orders.length}</p>
+          </button>
+          <div className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-6">
+            <p className="text-xs font-semibold text-[var(--color-on-surface-variant)] uppercase tracking-wide mb-1">Membre depuis</p>
+            <p className="text-sm font-semibold text-[var(--color-on-surface)]">
+              {new Date(user.created_at).toLocaleDateString("fr-FR", { month: "long", year: "numeric" })}
+            </p>
+          </div>
+          {orders.length > 0 && (
+            <div className="sm:col-span-2 bg-white border border-[var(--color-border-subtle)] rounded-2xl p-6">
+              <p className="text-xs font-semibold text-[var(--color-on-surface-variant)] uppercase tracking-wide mb-4">Dernière commande</p>
+              <OrderRow order={orders[0]} />
+            </div>
+          )}
         </div>
       )}
 
       {tab === "orders" && (
-        <div className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-8 text-center">
-          <p className="text-sm text-[var(--color-on-surface-variant)]">
-            L&apos;historique de vos commandes apparaîtra ici une fois que vous aurez passé une commande avec ce compte.
-          </p>
+        <div className="space-y-3">
+          {orders.length === 0 ? (
+            <div className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-10 text-center">
+              <p className="text-sm text-[var(--color-on-surface-variant)]">
+                Vous n&apos;avez pas encore passé de commande.
+              </p>
+            </div>
+          ) : (
+            orders.map((order) => (
+              <div key={order.id} className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-5">
+                <OrderRow order={order} />
+              </div>
+            ))
+          )}
         </div>
       )}
 
@@ -115,13 +133,55 @@ export default function MonCompteClient({ user }: Props) {
             <p className="text-xs font-semibold text-[var(--color-on-surface-variant)] uppercase tracking-wide mb-1">Nom</p>
             <p className="text-sm text-[var(--color-on-surface)]">{(user.user_metadata?.full_name as string) ?? "—"}</p>
           </div>
-          <p className="text-xs text-[var(--color-on-surface-variant)]">Pour modifier vos informations, contactez-nous sur WhatsApp.</p>
+          <a
+            href="https://wa.me/212641337443"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-primary)] hover:underline"
+          >
+            Modifier via WhatsApp →
+          </a>
         </div>
       )}
 
       {tab === "security" && (
         <ChangePasswordForm />
       )}
+    </div>
+  );
+}
+
+const STATUS_LABELS: Record<string, string> = {
+  pending: "En attente",
+  confirmed: "Confirmée",
+  shipped: "Expédiée",
+  delivered: "Livrée",
+  cancelled: "Annulée",
+};
+
+const STATUS_COLORS: Record<string, string> = {
+  pending: "bg-yellow-100 text-yellow-800",
+  confirmed: "bg-blue-100 text-blue-800",
+  shipped: "bg-purple-100 text-purple-800",
+  delivered: "bg-green-100 text-green-800",
+  cancelled: "bg-red-100 text-red-800",
+};
+
+function OrderRow({ order }: { order: UserOrder }) {
+  const colorCls = STATUS_COLORS[order.status] ?? "bg-gray-100 text-gray-700";
+  const label = STATUS_LABELS[order.status] ?? order.status;
+  return (
+    <div className="flex items-center justify-between gap-4 flex-wrap">
+      <div>
+        <p className="font-bold text-sm text-[var(--color-on-surface)]">{order.order_number}</p>
+        <p className="text-xs text-[var(--color-on-surface-variant)] mt-0.5">
+          {new Date(order.created_at).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}
+        </p>
+      </div>
+      <div className="flex items-center gap-3">
+        <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-semibold ${colorCls}`}>{label}</span>
+        <p className="font-bold text-[var(--color-on-surface)] text-sm whitespace-nowrap">{order.total_amount.toFixed(2)} DH</p>
+      </div>
     </div>
   );
 }

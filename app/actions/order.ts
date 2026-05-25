@@ -88,3 +88,23 @@ export async function updateOrderStatus(id: string, status: string) {
   revalidatePath("/admin/commandes");
   revalidatePath(`/admin/commandes/${id}`);
 }
+
+export interface UserOrder {
+  id: string;
+  order_number: string;
+  status: string;
+  payment_method: string;
+  total_amount: number;
+  created_at: string;
+}
+
+export async function getUserOrdersByEmail(email: string): Promise<UserOrder[]> {
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("orders")
+    .select("id, order_number, status, payment_method, total_amount, created_at")
+    .eq("customer_email", email)
+    .order("created_at", { ascending: false });
+  if (error) return [];
+  return data ?? [];
+}
