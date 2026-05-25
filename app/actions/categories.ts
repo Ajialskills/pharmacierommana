@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { requireAdmin } from "@/lib/supabase/require-admin";
 import type { Category } from "@/types";
 
 function slugify(str: string) {
@@ -24,6 +25,7 @@ export async function getCategories(): Promise<Category[]> {
 }
 
 export async function createCategory(formData: FormData) {
+  await requireAdmin();
   const supabase = createAdminClient();
   const name = formData.get("name") as string;
 
@@ -41,6 +43,7 @@ export async function createCategory(formData: FormData) {
 }
 
 export async function updateCategory(id: string, formData: FormData) {
+  await requireAdmin();
   const supabase = createAdminClient();
   const name = formData.get("name") as string;
 
@@ -59,6 +62,7 @@ export async function updateCategory(id: string, formData: FormData) {
 }
 
 export async function deleteCategory(id: string) {
+  await requireAdmin();
   const supabase = createAdminClient();
   const { error } = await supabase.from("categories").delete().eq("id", id);
   if (error) throw new Error(error.message);

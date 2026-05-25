@@ -88,7 +88,7 @@ export default async function BoutiquePage({ searchParams }: PageProps) {
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
                     <a
                       key={p}
-                      href={`?page=${p}${params.categorie ? `&categorie=${params.categorie}` : ""}${params.marque ? `&marque=${params.marque}` : ""}`}
+                      href={`?page=${p}${params.categorie ? `&categorie=${params.categorie}` : ""}${params.marque ? `&marque=${params.marque}` : ""}${params.min ? `&min=${params.min}` : ""}${params.max ? `&max=${params.max}` : ""}${params.promo ? `&promo=${params.promo}` : ""}`}
                       className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold border transition-colors ${
                         p === page
                           ? "bg-[var(--color-primary)] text-white border-[var(--color-primary)]"

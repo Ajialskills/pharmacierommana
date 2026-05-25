@@ -2,6 +2,7 @@
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
+import { requireAdmin } from "@/lib/supabase/require-admin";
 
 export interface CreateOrderInput {
   customer_name: string;
@@ -61,6 +62,7 @@ export async function createOrder(input: CreateOrderInput): Promise<{ id: string
 }
 
 export async function getOrders() {
+  await requireAdmin();
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("orders")
@@ -82,6 +84,7 @@ export async function getOrderById(id: string) {
 }
 
 export async function updateOrderStatus(id: string, status: string) {
+  await requireAdmin();
   const supabase = createAdminClient();
   const { error } = await supabase.from("orders").update({ status }).eq("id", id);
   if (error) throw new Error(error.message);
