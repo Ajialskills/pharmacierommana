@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { requireAdmin } from "@/lib/supabase/require-admin";
 import type { Article } from "@/types";
 
 function slugify(str: string) {
@@ -41,6 +42,7 @@ export async function getPublishedArticles(): Promise<Article[]> {
 }
 
 export async function createArticle(formData: FormData) {
+  await requireAdmin();
   const supabase = createAdminClient();
   const title = formData.get("title") as string;
   const { error } = await supabase.from("articles").insert({
@@ -50,7 +52,7 @@ export async function createArticle(formData: FormData) {
     body: (formData.get("body") as string) || null,
     cover_image: (formData.get("cover_image") as string) || null,
     is_published: formData.get("is_published") === "true",
-    published_at: new Date().toISOString(),
+    published_at: formData.get("is_published") === "true" ? new Date().toISOString() : null,
   });
   if (error) throw new Error(error.message);
   revalidatePath("/admin/carnet");
@@ -58,6 +60,7 @@ export async function createArticle(formData: FormData) {
 }
 
 export async function updateArticle(id: string, formData: FormData) {
+  await requireAdmin();
   const supabase = createAdminClient();
   const title = formData.get("title") as string;
   const { error } = await supabase.from("articles").update({
@@ -73,6 +76,7 @@ export async function updateArticle(id: string, formData: FormData) {
 }
 
 export async function deleteArticle(id: string) {
+  await requireAdmin();
   const supabase = createAdminClient();
   const { error } = await supabase.from("articles").delete().eq("id", id);
   if (error) throw new Error(error.message);

@@ -1,6 +1,8 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState, useCallback, useEffect } from "react";
+
+const WISHLIST_KEY = "pr_wishlist";
 import type { Product } from "@/types";
 
 interface WishlistContextValue {
@@ -14,6 +16,19 @@ const WishlistContext = createContext<WishlistContextValue | null>(null);
 
 export function WishlistProvider({ children }: { children: React.ReactNode }) {
   const [ids, setIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(WISHLIST_KEY);
+      if (stored) setIds(JSON.parse(stored) as string[]);
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(WISHLIST_KEY, JSON.stringify(ids));
+    } catch {}
+  }, [ids]);
 
   const toggle = useCallback((product: Product) => {
     setIds((prev) =>

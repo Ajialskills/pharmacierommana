@@ -2,6 +2,7 @@
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
+import { requireAdmin } from "@/lib/supabase/require-admin";
 
 export interface GardeEntry {
   id: string;
@@ -22,6 +23,7 @@ export async function getGardeHistory(): Promise<GardeEntry[]> {
 }
 
 export async function createGardeEntry(week_start_date: string, pdf_url: string): Promise<void> {
+  await requireAdmin();
   if (!week_start_date || !pdf_url) throw new Error("Date et URL PDF requis.");
   const supabase = createAdminClient();
   const { error } = await supabase
@@ -33,6 +35,7 @@ export async function createGardeEntry(week_start_date: string, pdf_url: string)
 }
 
 export async function deleteGardeEntry(id: string): Promise<void> {
+  await requireAdmin();
   const supabase = createAdminClient();
   const { error } = await supabase.from("pharmacie_de_garde").delete().eq("id", id);
   if (error) throw new Error(error.message);

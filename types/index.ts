@@ -61,7 +61,7 @@ export interface Order {
   payment_status: "pending" | "paid" | "failed" | "refunded";
   subtotal: number;
   shipping_cost: number;
-  total: number;
+  total_amount: number;
   shipping_address: Address;
   customer_name: string;
   customer_email: string;

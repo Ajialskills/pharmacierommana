@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { requireAdmin } from "@/lib/supabase/require-admin";
 import type { Product } from "@/types";
 
 function slugify(str: string) {
@@ -14,6 +15,7 @@ function slugify(str: string) {
 }
 
 export async function createProduct(formData: FormData) {
+  await requireAdmin();
   const supabase = createAdminClient();
 
   const name = formData.get("name") as string;
@@ -48,6 +50,7 @@ export async function createProduct(formData: FormData) {
 }
 
 export async function updateProduct(id: string, formData: FormData) {
+  await requireAdmin();
   const supabase = createAdminClient();
 
   const name = formData.get("name") as string;
@@ -81,6 +84,7 @@ export async function updateProduct(id: string, formData: FormData) {
 }
 
 export async function deleteProduct(id: string) {
+  await requireAdmin();
   const supabase = createAdminClient();
   const { error } = await supabase.from("products").delete().eq("id", id);
   if (error) throw new Error(error.message);

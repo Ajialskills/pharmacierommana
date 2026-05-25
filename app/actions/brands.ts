@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { requireAdmin } from "@/lib/supabase/require-admin";
 import type { Brand } from "@/types";
 
 export async function getBrands(): Promise<Brand[]> {
@@ -21,6 +22,7 @@ interface BrandPayload {
 }
 
 export async function createBrand(payload: BrandPayload) {
+  await requireAdmin();
   const supabase = createAdminClient();
   const { error } = await supabase.from("brands").insert(payload);
   if (error) throw new Error(error.message);
@@ -29,6 +31,7 @@ export async function createBrand(payload: BrandPayload) {
 }
 
 export async function updateBrand(id: string, payload: BrandPayload) {
+  await requireAdmin();
   const supabase = createAdminClient();
   const { error } = await supabase.from("brands").update(payload).eq("id", id);
   if (error) throw new Error(error.message);
@@ -37,6 +40,7 @@ export async function updateBrand(id: string, payload: BrandPayload) {
 }
 
 export async function deleteBrand(id: string) {
+  await requireAdmin();
   const supabase = createAdminClient();
   const { error } = await supabase.from("brands").delete().eq("id", id);
   if (error) throw new Error(error.message);
