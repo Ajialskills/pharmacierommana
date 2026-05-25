@@ -1,10 +1,34 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useWishlist } from "@/components/wishlist/WishlistContext";
+import { createClient } from "@/lib/supabase/client";
+import ProductCard from "@/components/product/ProductCard";
+import type { Product } from "@/types";
 
 export default function FavorisPage() {
   const { ids, count } = useWishlist();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (ids.length === 0) {
+      setProducts([]);
+      return;
+    }
+    setLoading(true);
+    const supabase = createClient();
+    supabase
+      .from("products")
+      .select("*")
+      .in("id", ids)
+      .eq("is_published", true)
+      .then(({ data }) => {
+        setProducts((data as Product[]) ?? []);
+        setLoading(false);
+      });
+  }, [ids]);
 
   return (
     <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-10">
@@ -21,11 +45,15 @@ export default function FavorisPage() {
             Découvrir la boutique
           </Link>
         </div>
+      ) : loading ? (
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+          {ids.map((id) => (
+            <div key={id} className="rounded-2xl bg-[var(--color-surface-variant)] animate-pulse aspect-[3/4]" />
+          ))}
+        </div>
       ) : (
-        <div className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-6">
-          <p className="text-sm text-[var(--color-on-surface-variant)]">
-            {ids.length} ID{ids.length > 1 ? "s" : ""} sauvegardé{ids.length > 1 ? "s" : ""}. Les favoris sont conservés en mémoire locale — connectez-vous pour les synchroniser entre appareils.
-          </p>
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+          {products.map((p) => <ProductCard key={p.id} product={p} />)}
         </div>
       )}
     </div>

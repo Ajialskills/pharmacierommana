@@ -21,6 +21,8 @@ export default function ProductGallery({ images, name }: Props) {
             <button
               key={url}
               onClick={() => setActive(i)}
+              aria-pressed={i === active}
+              aria-label={`Image ${i + 1}${i === active ? ", actuellement affichée" : ""}`}
               className={`w-16 h-16 rounded-xl border-2 overflow-hidden bg-[var(--color-background-soft)] transition-colors ${i === active ? "border-[var(--color-primary)]" : "border-[var(--color-border-subtle)]"}`}
             >
               <Image src={url} alt={`${name} vue ${i + 1}`} width={64} height={64} className="w-full h-full object-contain p-1" />

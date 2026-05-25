@@ -27,14 +27,19 @@ export default function MonCompteClient({ user, orders }: Props) {
 
   async function handleSignOut() {
     setLoading(true);
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    router.push("/");
-    router.refresh();
+    try {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+      router.push("/");
+      router.refresh();
+    } finally {
+      setLoading(false);
+    }
   }
 
   const initials = (user.user_metadata?.full_name as string)
     ?.split(" ")
+    .filter(Boolean)
     .map((n: string) => n[0])
     .join("")
     .slice(0, 2)
@@ -213,12 +218,12 @@ function ChangePasswordForm() {
       {error && <p className="text-sm text-[var(--color-error)]">{error}</p>}
       {success && <p className="text-sm text-[var(--color-success-green)]">Mot de passe mis à jour.</p>}
       <div>
-        <label className="block text-xs font-semibold text-[var(--color-on-surface-variant)] mb-1.5 uppercase tracking-wide">Nouveau mot de passe</label>
-        <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className={inputCls} />
+        <label htmlFor="new-password" className="block text-xs font-semibold text-[var(--color-on-surface-variant)] mb-1.5 uppercase tracking-wide">Nouveau mot de passe</label>
+        <input id="new-password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className={inputCls} autoComplete="new-password" />
       </div>
       <div>
-        <label className="block text-xs font-semibold text-[var(--color-on-surface-variant)] mb-1.5 uppercase tracking-wide">Confirmer</label>
-        <input type="password" required value={confirm} onChange={(e) => setConfirm(e.target.value)} className={inputCls} />
+        <label htmlFor="confirm-password" className="block text-xs font-semibold text-[var(--color-on-surface-variant)] mb-1.5 uppercase tracking-wide">Confirmer</label>
+        <input id="confirm-password" type="password" required value={confirm} onChange={(e) => setConfirm(e.target.value)} className={inputCls} autoComplete="new-password" />
       </div>
       <button type="submit" disabled={loading} className="bg-[var(--color-primary)] text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:opacity-90 disabled:opacity-60 transition-opacity">
         {loading ? "Mise à jour…" : "Mettre à jour"}

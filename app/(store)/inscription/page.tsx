@@ -80,20 +80,20 @@ export default function InscriptionPage() {
             <p className="text-sm text-[var(--color-error)] bg-[var(--color-error-container)] px-4 py-3 rounded-xl">{error}</p>
           )}
           <div>
-            <label className={labelCls}>Prénom & nom</label>
-            <input required value={form.full_name} onChange={(e) => set("full_name", e.target.value)} className={inputCls} autoComplete="name" />
+            <label htmlFor="reg-name" className={labelCls}>Prénom & nom</label>
+            <input id="reg-name" required value={form.full_name} onChange={(e) => set("full_name", e.target.value)} className={inputCls} autoComplete="name" />
           </div>
           <div>
-            <label className={labelCls}>Email</label>
-            <input type="email" required value={form.email} onChange={(e) => set("email", e.target.value)} className={inputCls} autoComplete="email" />
+            <label htmlFor="reg-email" className={labelCls}>Email</label>
+            <input id="reg-email" type="email" required value={form.email} onChange={(e) => set("email", e.target.value)} className={inputCls} autoComplete="email" />
           </div>
           <div>
-            <label className={labelCls}>Mot de passe</label>
-            <input type="password" required value={form.password} onChange={(e) => set("password", e.target.value)} className={inputCls} autoComplete="new-password" />
+            <label htmlFor="reg-password" className={labelCls}>Mot de passe</label>
+            <input id="reg-password" type="password" required value={form.password} onChange={(e) => set("password", e.target.value)} className={inputCls} autoComplete="new-password" />
           </div>
           <div>
-            <label className={labelCls}>Confirmer le mot de passe</label>
-            <input type="password" required value={form.confirm} onChange={(e) => set("confirm", e.target.value)} className={inputCls} autoComplete="new-password" />
+            <label htmlFor="reg-confirm" className={labelCls}>Confirmer le mot de passe</label>
+            <input id="reg-confirm" type="password" required value={form.confirm} onChange={(e) => set("confirm", e.target.value)} className={inputCls} autoComplete="new-password" />
           </div>
           <button
             type="submit"

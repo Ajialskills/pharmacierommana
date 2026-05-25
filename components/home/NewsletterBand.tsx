@@ -1,6 +1,16 @@
 "use client";
 
+import { useState } from "react";
+
 export default function NewsletterBand() {
+  const [submitted, setSubmitted] = useState(false);
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    // TODO: wire to Resend or a newsletter provider when credentials are available
+    setSubmitted(true);
+  }
+
   return (
     <section
       aria-labelledby="newsletter-heading"
@@ -23,24 +33,33 @@ export default function NewsletterBand() {
           </p>
         </div>
 
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          className="flex w-full max-w-md gap-3"
-          aria-label="Formulaire newsletter"
-        >
-          <input
-            type="email"
-            placeholder="Votre email"
-            required
-            className="flex-grow rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-white/60 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-white/40 text-sm"
-          />
-          <button
-            type="submit"
-            className="bg-white text-[var(--color-primary)] px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-opacity text-sm whitespace-nowrap"
+        {submitted ? (
+          <p className="text-white font-semibold text-sm bg-white/10 px-6 py-3 rounded-xl">
+            Merci ! Vous serez informé de nos prochaines offres.
+          </p>
+        ) : (
+          <form
+            onSubmit={handleSubmit}
+            className="flex w-full max-w-md gap-3"
+            aria-label="Formulaire newsletter"
           >
-            S&apos;inscrire
-          </button>
-        </form>
+            <label htmlFor="newsletter-email" className="sr-only">Adresse email</label>
+            <input
+              id="newsletter-email"
+              type="email"
+              name="email"
+              placeholder="Votre email"
+              required
+              className="flex-grow rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-white/60 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-white/40 text-sm"
+            />
+            <button
+              type="submit"
+              className="bg-white text-[var(--color-primary)] px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-opacity text-sm whitespace-nowrap"
+            >
+              S&apos;inscrire
+            </button>
+          </form>
+        )}
       </div>
     </section>
   );

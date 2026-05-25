@@ -47,7 +47,7 @@ export default function CommandeClient() {
   }
 
   function addressComplete() {
-    return form.customer_name && form.customer_email && form.customer_phone && form.shipping_address && form.shipping_city;
+    return !!(form.customer_name && form.customer_email && form.customer_phone && form.shipping_address && form.shipping_city);
   }
 
   async function handleSubmit() {
@@ -76,6 +76,7 @@ export default function CommandeClient() {
       router.push(`/commande/succes?order=${order_number}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur lors de la commande");
+    } finally {
       setSubmitting(false);
     }
   }
@@ -100,12 +101,12 @@ export default function CommandeClient() {
               <input className={inputCls} value={form.customer_name} onChange={(e) => set("customer_name", e.target.value)} required />
             </div>
             <div>
-              <label className={labelCls}>Email</label>
-              <input type="email" className={inputCls} value={form.customer_email} onChange={(e) => set("customer_email", e.target.value)} />
+              <label className={labelCls}>Email *</label>
+              <input type="email" className={inputCls} value={form.customer_email} onChange={(e) => set("customer_email", e.target.value)} required />
             </div>
             <div>
               <label className={labelCls}>Téléphone *</label>
-              <input type="tel" className={inputCls} value={form.customer_phone} onChange={(e) => set("customer_phone", e.target.value)} required />
+              <input type="tel" className={inputCls} value={form.customer_phone} onChange={(e) => set("customer_phone", e.target.value)} required pattern="[0-9+\-\s]{10,}" title="Numéro de téléphone valide (minimum 10 chiffres)" />
             </div>
             <div className="col-span-2">
               <label className={labelCls}>Adresse de livraison *</label>

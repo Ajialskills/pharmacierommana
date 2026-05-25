@@ -36,6 +36,7 @@ export async function updateBrand(id: string, payload: BrandPayload) {
   const { error } = await supabase.from("brands").update(payload).eq("id", id);
   if (error) throw new Error(error.message);
   revalidatePath("/admin/marques");
+  revalidatePath("/marques");
   revalidatePath(`/marques/${payload.slug}`);
 }
 

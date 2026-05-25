@@ -25,6 +25,9 @@ export async function getGardeHistory(): Promise<GardeEntry[]> {
 export async function createGardeEntry(week_start_date: string, pdf_url: string): Promise<void> {
   await requireAdmin();
   if (!week_start_date || !pdf_url) throw new Error("Date et URL PDF requis.");
+  if (!pdf_url.startsWith("https://")) throw new Error("L'URL PDF doit commencer par https://");
+  const day = new Date(week_start_date).getDay();
+  if (day !== 1) throw new Error("La date de début de semaine doit être un lundi.");
   const supabase = createAdminClient();
   const { error } = await supabase
     .from("pharmacie_de_garde")

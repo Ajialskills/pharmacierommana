@@ -95,8 +95,9 @@ export default function BrandsManager({ brands }: Props) {
             {editing ? "Modifier la marque" : "Nouvelle marque"}
           </h3>
           <div>
-            <label className="block text-xs font-semibold text-[var(--color-on-surface-variant)] mb-1.5 uppercase tracking-wide">Nom *</label>
+            <label htmlFor="brand-name" className="block text-xs font-semibold text-[var(--color-on-surface-variant)] mb-1.5 uppercase tracking-wide">Nom *</label>
             <input
+              id="brand-name"
               required
               value={name}
               onChange={(e) => handleNameChange(e.target.value)}
@@ -104,8 +105,9 @@ export default function BrandsManager({ brands }: Props) {
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-[var(--color-on-surface-variant)] mb-1.5 uppercase tracking-wide">Slug *</label>
+            <label htmlFor="brand-slug" className="block text-xs font-semibold text-[var(--color-on-surface-variant)] mb-1.5 uppercase tracking-wide">Slug *</label>
             <input
+              id="brand-slug"
               required
               value={slug}
               onChange={(e) => setSlug(e.target.value)}
@@ -113,8 +115,9 @@ export default function BrandsManager({ brands }: Props) {
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-[var(--color-on-surface-variant)] mb-1.5 uppercase tracking-wide">URL du logo</label>
+            <label htmlFor="brand-logo" className="block text-xs font-semibold text-[var(--color-on-surface-variant)] mb-1.5 uppercase tracking-wide">URL du logo</label>
             <input
+              id="brand-logo"
               value={logoUrl}
               onChange={(e) => setLogoUrl(e.target.value)}
               placeholder="https://..."

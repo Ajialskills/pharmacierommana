@@ -22,6 +22,7 @@ export default function ConnexionPage() {
       setError("Email ou mot de passe incorrect.");
       setLoading(false);
     } else {
+      setLoading(false);
       router.push("/mon-compte");
       router.refresh();
     }
@@ -43,12 +44,12 @@ export default function ConnexionPage() {
             <p className="text-sm text-[var(--color-error)] bg-[var(--color-error-container)] px-4 py-3 rounded-xl">{error}</p>
           )}
           <div>
-            <label className="block text-xs font-semibold text-[var(--color-on-surface-variant)] mb-1.5 uppercase tracking-wide">Email</label>
-            <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className={inputCls} autoComplete="email" />
+            <label htmlFor="login-email" className="block text-xs font-semibold text-[var(--color-on-surface-variant)] mb-1.5 uppercase tracking-wide">Email</label>
+            <input id="login-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className={inputCls} autoComplete="email" />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-[var(--color-on-surface-variant)] mb-1.5 uppercase tracking-wide">Mot de passe</label>
-            <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className={inputCls} autoComplete="current-password" />
+            <label htmlFor="login-password" className="block text-xs font-semibold text-[var(--color-on-surface-variant)] mb-1.5 uppercase tracking-wide">Mot de passe</label>
+            <input id="login-password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className={inputCls} autoComplete="current-password" />
           </div>
           <button
             type="submit"

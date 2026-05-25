@@ -44,20 +44,20 @@ export default function ArticleForm({ article }: Props) {
       <section className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-6 space-y-5">
         <h2 className="font-bold text-[var(--color-on-surface)]">Contenu</h2>
         <div>
-          <label className={labelCls}>Titre *</label>
-          <input name="title" required defaultValue={article?.title} className={inputCls} />
+          <label htmlFor="article-title" className={labelCls}>Titre *</label>
+          <input id="article-title" name="title" required defaultValue={article?.title} className={inputCls} />
         </div>
         <div>
-          <label className={labelCls}>Extrait</label>
-          <textarea name="excerpt" rows={2} defaultValue={article?.excerpt ?? ""} className={`${inputCls} resize-none`} />
+          <label htmlFor="article-excerpt" className={labelCls}>Extrait</label>
+          <textarea id="article-excerpt" name="excerpt" rows={2} defaultValue={article?.excerpt ?? ""} className={`${inputCls} resize-none`} />
         </div>
         <div>
-          <label className={labelCls}>Corps de l&apos;article</label>
-          <textarea name="body" rows={12} defaultValue={article?.body ?? ""} className={`${inputCls} resize-y`} />
+          <label htmlFor="article-body" className={labelCls}>Corps de l&apos;article</label>
+          <textarea id="article-body" name="body" rows={12} defaultValue={article?.body ?? ""} className={`${inputCls} resize-y`} />
         </div>
         <div>
-          <label className={labelCls}>URL image de couverture</label>
-          <input name="cover_image" defaultValue={article?.cover_image ?? ""} className={inputCls} placeholder="https://..." />
+          <label htmlFor="article-cover" className={labelCls}>URL image de couverture</label>
+          <input id="article-cover" name="cover_image" defaultValue={article?.cover_image ?? ""} className={inputCls} placeholder="https://..." />
         </div>
       </section>
 

@@ -65,13 +65,15 @@ export default async function Header() {
         </Link>
 
         {/* Search — desktop */}
-        <div className="hidden md:flex flex-1 relative">
+        <form action="/boutique" method="get" className="hidden md:flex flex-1 relative" role="search">
           <input
             type="text"
+            name="q"
             placeholder="Rechercher des produits..."
             className="w-full bg-[var(--color-background-soft)] border border-[var(--color-border-subtle)] rounded-full px-6 py-2.5 text-[var(--color-on-surface)] placeholder:text-[var(--color-outline)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition-all text-sm"
           />
           <button
+            type="submit"
             aria-label="Rechercher"
             className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--color-primary)]"
           >
@@ -79,7 +81,7 @@ export default async function Header() {
               <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
             </svg>
           </button>
-        </div>
+        </form>
 
         {/* Right actions */}
         <div className="flex items-center gap-6 flex-shrink-0">
@@ -133,7 +135,7 @@ export default async function Header() {
                 </Link>
 
                 {subs.length > 0 && (
-                  <div className="absolute top-full left-0 pt-1 hidden group-hover:block z-50 min-w-[180px]">
+                  <div className="absolute top-full left-0 pt-1 hidden group-hover:block group-focus-within:block z-50 min-w-[180px]">
                     <div className="bg-white border border-[var(--color-border-subtle)] rounded-xl shadow-lg py-1.5 overflow-hidden">
                       {subs.map((sub) => (
                         <Link

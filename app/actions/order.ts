@@ -1,6 +1,7 @@
 "use server";
 
 import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/supabase/require-admin";
 
@@ -19,6 +20,11 @@ export interface CreateOrderInput {
 }
 
 export async function createOrder(input: CreateOrderInput): Promise<{ id: string; order_number: string }> {
+  const phone = input.customer_phone.trim();
+  if (phone.replace(/[\s+\-]/g, "").length < 10) {
+    throw new Error("Numéro de téléphone invalide");
+  }
+
   const supabase = createAdminClient();
 
   const order_number = `PR-${Date.now().toString(36).toUpperCase()}`;
@@ -54,7 +60,10 @@ export async function createOrder(input: CreateOrderInput): Promise<{ id: string
   }));
 
   const { error: itemsError } = await supabase.from("order_items").insert(orderItems);
-  if (itemsError) throw new Error(itemsError.message);
+  if (itemsError) {
+    await supabase.from("orders").delete().eq("id", order.id);
+    throw new Error(itemsError.message);
+  }
 
   revalidatePath("/admin/commandes");
 
@@ -73,6 +82,7 @@ export async function getOrders() {
 }
 
 export async function getOrderById(id: string) {
+  await requireAdmin();
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("orders")
@@ -101,12 +111,16 @@ export interface UserOrder {
   created_at: string;
 }
 
-export async function getUserOrdersByEmail(email: string): Promise<UserOrder[]> {
+export async function getUserOrders(): Promise<UserOrder[]> {
+  const serverClient = await createClient();
+  const { data: { user } } = await serverClient.auth.getUser();
+  if (!user?.email) return [];
+
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("orders")
     .select("id, order_number, status, payment_method, total_amount, created_at")
-    .eq("customer_email", email)
+    .eq("customer_email", user.email)
     .order("created_at", { ascending: false });
   if (error) return [];
   return data ?? [];

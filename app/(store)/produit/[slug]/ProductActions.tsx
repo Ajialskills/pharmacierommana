@@ -14,7 +14,7 @@ export default function ProductActions({ product }: Props) {
   const { toggle, has } = useWishlist();
   const [qty, setQty] = useState(1);
   const inWishlist = has(product.id);
-  const outOfStock = product.stock === 0;
+  const outOfStock = product.stock == null || product.stock <= 0;
 
   return (
     <div className="space-y-4">
@@ -29,7 +29,7 @@ export default function ProductActions({ product }: Props) {
             >−</button>
             <span className="px-4 py-2.5 text-sm font-bold text-[var(--color-on-surface)]">{qty}</span>
             <button
-              onClick={() => setQty((q) => Math.min(product.stock, q + 1))}
+              onClick={() => setQty((q) => Math.min(product.stock ?? q, q + 1))}
               className="px-4 py-2.5 text-[var(--color-on-surface-variant)] hover:bg-[var(--color-background-soft)] transition-colors"
             >+</button>
           </div>
