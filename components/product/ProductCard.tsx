@@ -1,13 +1,22 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useCart } from "@/components/cart/CartContext";
+import { useWishlist } from "@/components/wishlist/WishlistContext";
 import type { Product } from "@/types";
 
 interface ProductCardProps {
   product: Product;
   showBadge?: boolean;
+  className?: string;
 }
 
-export default function ProductCard({ product, showBadge = true }: ProductCardProps) {
+export default function ProductCard({ product, showBadge = true, className = "" }: ProductCardProps) {
+  const { add } = useCart();
+  const { toggle, has } = useWishlist();
+  const inWishlist = has(product.id);
+
   const discount =
     product.sale_price && product.price > product.sale_price
       ? Math.round(((product.price - product.sale_price) / product.price) * 100)
@@ -16,7 +25,7 @@ export default function ProductCard({ product, showBadge = true }: ProductCardPr
   const displayPrice = product.sale_price ?? product.price;
 
   return (
-    <article className="bg-white rounded-2xl border border-[var(--color-border-subtle)] p-4 group transition-all hover:shadow-xl card-shadow flex flex-col">
+    <article className={`bg-white rounded-2xl border border-[var(--color-border-subtle)] p-4 group transition-all hover:shadow-xl card-shadow flex flex-col ${className}`}>
       {/* Image */}
       <div className="relative mb-4 aspect-square overflow-hidden rounded-xl bg-[var(--color-background-soft)]">
         {showBadge && discount && (
@@ -55,10 +64,19 @@ export default function ProductCard({ product, showBadge = true }: ProductCardPr
             </svg>
           </Link>
           <button
-            aria-label={`Ajouter ${product.name} aux favoris`}
-            className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[var(--color-primary)] shadow-lg hover:scale-110 transition-transform"
+            onClick={() => toggle(product)}
+            aria-label={inWishlist ? `Retirer des favoris` : `Ajouter aux favoris`}
+            className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+            style={{ color: inWishlist ? "var(--color-tertiary-container)" : "var(--color-primary)" }}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill={inWishlist ? "currentColor" : "none"}
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
             </svg>
           </button>
@@ -67,11 +85,6 @@ export default function ProductCard({ product, showBadge = true }: ProductCardPr
 
       {/* Meta */}
       <div className="flex-1 flex flex-col">
-        <span className="text-[10px] text-[var(--color-on-surface-variant)] uppercase tracking-widest font-bold mb-1">
-          {/* Category name would come from join — placeholder */}
-          {product.category_id ? "Catégorie" : ""}
-        </span>
-
         <h3 className="font-bold text-[var(--color-on-surface)] mb-2 line-clamp-2 text-sm leading-snug flex-1">
           <Link href={`/produit/${product.slug}`} className="hover:text-[var(--color-primary)] transition-colors">
             {product.name}
@@ -90,13 +103,17 @@ export default function ProductCard({ product, showBadge = true }: ProductCardPr
           )}
         </div>
 
-        <button className="w-full py-2.5 bg-[var(--color-primary)] text-white rounded-lg font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity text-sm">
+        <button
+          onClick={() => add(product)}
+          disabled={product.stock === 0}
+          className="w-full py-2.5 bg-[var(--color-primary)] text-white rounded-lg font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+        >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
             <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
             <line x1="3" y1="6" x2="21" y2="6" />
             <path d="M16 10a4 4 0 0 1-8 0" />
           </svg>
-          Panier
+          {product.stock === 0 ? "Rupture de stock" : "Panier"}
         </button>
       </div>
     </article>

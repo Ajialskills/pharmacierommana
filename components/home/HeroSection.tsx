@@ -4,71 +4,57 @@ export default function HeroSection() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="relative bg-[var(--color-surface-container-low)] py-16 md:py-24 overflow-hidden"
+      className="relative py-16 md:py-24"
     >
-      <div
-        style={{ maxWidth: "var(--spacing-max-width)" }}
-        className="mx-auto px-[var(--spacing-lg)] grid md:grid-cols-2 items-center gap-[var(--spacing-gutter)]"
+      {/* Background video */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover opacity-20"
+        aria-hidden
       >
-        {/* Copy */}
-        <div className="z-10 text-center md:text-left">
-          <span className="inline-block bg-[color-mix(in_srgb,var(--color-primary-container)_15%,transparent)] text-[var(--color-primary)] font-semibold text-xs uppercase tracking-widest px-4 py-1.5 rounded-full mb-6">
-            Expertise Pharmaceutique
-          </span>
-          <h1
-            id="hero-heading"
-            style={{
-              fontSize: "var(--text-headline-xl)",
-              lineHeight: "var(--text-headline-xl--line-height)",
-              letterSpacing: "var(--text-headline-xl--letter-spacing)",
-              fontWeight: "var(--text-headline-xl--font-weight)",
-            }}
-            className="text-[var(--color-on-background)] mb-6"
-          >
-            Votre santé, notre priorité numérique.
-          </h1>
-          <p
-            style={{
-              fontSize: "var(--text-body-lg)",
-              lineHeight: "var(--text-body-lg--line-height)",
-            }}
-            className="text-[var(--color-on-surface-variant)] mb-10 max-w-lg mx-auto md:mx-0"
-          >
-            Découvrez une large gamme de produits parapharmaceutiques
-            sélectionnés pour votre bien-être quotidien, livrés directement
-            chez vous.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-            <Link
-              href="/boutique"
-              className="bg-[var(--color-primary)] text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
-            >
-              Voir les offres
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </Link>
-            <a
-              href="https://wa.me/212641337443"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-white border-2 border-[var(--color-secondary)] text-[var(--color-secondary)] px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-[color-mix(in_srgb,var(--color-secondary-container)_15%,transparent)] transition-colors"
-            >
-              WhatsApp Conseil
-            </a>
-          </div>
-        </div>
+        <source src="/herovid.mp4" type="video/mp4" />
+      </video>
+      {/* Teal overlay */}
+      <div className="absolute inset-0 bg-[#00696E]/30" />
+      {/* Content */}
+      <div className="relative z-10 text-center" style={{ maxWidth: "1000px", width: "100%", margin: "0 auto", padding: "0 1.5rem" }}>
+        <span className="inline-block bg-white/20 text-white font-semibold text-xs uppercase tracking-widest px-4 py-1.5 rounded-full mb-6">
+          Expertise Pharmaceutique
+        </span>
 
-        {/* Visual */}
-        <div className="relative mt-12 md:mt-0">
-          <div className="absolute -top-12 -right-12 w-64 h-64 bg-[color-mix(in_srgb,var(--color-primary-container)_20%,transparent)] rounded-full blur-3xl pointer-events-none" />
-          {/* TODO: Replace with real pharmacy hero image from Cloudinary */}
-          <div className="relative z-10 rounded-3xl bg-[var(--color-surface-container)] aspect-[16/10] flex items-center justify-center">
-            <p className="text-[var(--color-on-surface-variant)] text-sm">
-              {/* TODO: <Image src={cloudinaryUrl} ... /> */}
-              Image hero à venir
-            </p>
-          </div>
+        <h1
+          id="hero-heading"
+          className="font-bold tracking-tight text-black mb-6 text-center whitespace-nowrap"
+          style={{ fontSize: "clamp(1.5rem, 2.8vw, 2.8rem)" }}
+        >
+          Votre santé, notre priorité numérique.
+        </h1>
+
+        <p className="text-black mb-10" style={{ fontSize: "1.125rem", lineHeight: "1.75", maxWidth: "560px", width: "100%", margin: "0 auto 2.5rem" }}>
+          Découvrez une large gamme de produits parapharmaceutiques sélectionnés pour votre bien-être quotidien, livrés directement chez vous.
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link
+            href="/boutique"
+            className="bg-[var(--color-primary)] text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+          >
+            Voir les offres
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </Link>
+          <a
+            href="https://wa.me/212641337443"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-transparent border-2 border-white/70 text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:border-white hover:bg-white/10 transition-colors"
+          >
+            WhatsApp Conseil
+          </a>
         </div>
       </div>
     </section>

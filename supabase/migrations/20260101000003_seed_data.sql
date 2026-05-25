@@ -4,7 +4,7 @@
 
 -- ── Top-level categories ──
 insert into public.categories (slug, name, sort_order) values
-  ('bebe-et-maman', 'Bébé et maman', 1),
+  ('bebe-et-maman', 'Maternité', 1),
   ('cheveux',       'Cheveux',        2),
   ('corps',         'Corps',          3),
   ('homme',         'Homme',          4),

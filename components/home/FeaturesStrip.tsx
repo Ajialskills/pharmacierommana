@@ -1,72 +1,54 @@
-const FEATURES = [
-  {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <rect x="1" y="3" width="15" height="13" rx="2" />
-        <path d="M16 8h4l3 5v4h-7V8z" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" />
-      </svg>
-    ),
-    bg: "bg-[color-mix(in_srgb,var(--color-primary-container)_20%,transparent)]",
-    color: "text-[var(--color-primary)]",
-    title: "Livraison Gratuite",
-    description: "Dès 400 DH sur Tétouan & 800 DH au Maroc",
-  },
-  {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
-        <line x1="1" y1="10" x2="23" y2="10" />
-      </svg>
-    ),
-    bg: "bg-[color-mix(in_srgb,var(--color-secondary-container)_20%,transparent)]",
-    color: "text-[var(--color-secondary)]",
-    title: "Paiement Cash",
-    description: "Payez en toute confiance à la réception",
-  },
-  {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-      </svg>
-    ),
-    bg: "bg-[color-mix(in_srgb,var(--color-success-green)_15%,transparent)]",
-    color: "text-[var(--color-success-green)]",
-    title: "Conseil Pro",
-    description: "Pharmaciens disponibles via WhatsApp",
-  },
-];
-
 export default function FeaturesStrip() {
   return (
-    <section aria-label="Nos services" className="py-[var(--spacing-xl)] bg-white">
-      <ul
+    <section aria-label="Nos services" className="pb-6 -mt-6 bg-[var(--color-surface-container-low)]">
+      <div
         style={{ maxWidth: "var(--spacing-max-width)" }}
-        className="mx-auto px-[var(--spacing-lg)] grid grid-cols-1 md:grid-cols-3 gap-[var(--spacing-gutter)]"
+        className="mx-auto px-[var(--spacing-lg)] grid md:grid-cols-2 gap-[var(--spacing-gutter)]"
       >
-        {FEATURES.map((f) => (
-          <li
-            key={f.title}
-            className="flex items-center gap-6 p-6 rounded-2xl bg-[var(--color-background-soft)] border border-[var(--color-border-subtle)] transition-transform hover:-translate-y-1"
-          >
-            <div
-              className={`w-14 h-14 ${f.bg} ${f.color} rounded-full flex items-center justify-center flex-shrink-0`}
+        {/* Livraison Gratuite */}
+        <div className="relative overflow-hidden h-28 rounded-2xl flex items-center justify-between gap-8 px-10 bg-[var(--color-secondary)]">
+          <div className="absolute inset-0 bg-black/10 pointer-events-none" />
+          <div className="relative z-10 text-white">
+            <span
+              style={{ fontSize: "var(--text-label-caps)", letterSpacing: "var(--text-label-caps--letter-spacing)" }}
+              className="block font-semibold uppercase opacity-70 mb-1"
             >
-              {f.icon}
-            </div>
-            <div>
-              <h3
-                style={{ fontSize: "var(--text-headline-sm)", lineHeight: "var(--text-headline-sm--line-height)", fontWeight: "var(--text-headline-sm--font-weight)" }}
-                className="text-[var(--color-on-surface)] mb-1"
-              >
-                {f.title}
-              </h3>
-              <p className="text-[var(--color-on-surface-variant)] text-sm">
-                {f.description}
-              </p>
-            </div>
-          </li>
-        ))}
-      </ul>
+              Livraison
+            </span>
+            <h3
+              style={{ fontSize: "var(--text-headline-lg)", lineHeight: "var(--text-headline-lg--line-height)", fontWeight: "var(--text-headline-lg--font-weight)" }}
+            >
+              Livraison Gratuite
+            </h3>
+          </div>
+          <span className="relative z-10 inline-block bg-white/15 text-white px-4 py-2 rounded-lg font-semibold text-sm flex-shrink-0 text-center leading-snug">
+            Dès 400 DH<br />
+            <span className="opacity-80 text-xs font-normal">Tétouan & Maroc</span>
+          </span>
+        </div>
+
+        {/* Paiement Cash */}
+        <div className="relative overflow-hidden h-28 rounded-2xl flex items-center justify-between gap-8 px-10 bg-[var(--color-primary)]">
+          <div className="absolute inset-0 bg-black/10 pointer-events-none" />
+          <div className="relative z-10 text-white">
+            <span
+              style={{ fontSize: "var(--text-label-caps)", letterSpacing: "var(--text-label-caps--letter-spacing)" }}
+              className="block font-semibold uppercase opacity-70 mb-1"
+            >
+              Paiement
+            </span>
+            <h3
+              style={{ fontSize: "var(--text-headline-lg)", lineHeight: "var(--text-headline-lg--line-height)", fontWeight: "var(--text-headline-lg--font-weight)" }}
+            >
+              Paiement à la Livraison
+            </h3>
+          </div>
+          <span className="relative z-10 inline-block bg-white/15 text-white px-4 py-2 rounded-lg font-semibold text-sm flex-shrink-0 text-center leading-snug">
+            100% Sécurisé<br />
+            <span className="opacity-80 text-xs font-normal">Payez à la réception</span>
+          </span>
+        </div>
+      </div>
     </section>
   );
 }

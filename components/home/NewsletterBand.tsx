@@ -1,3 +1,5 @@
+"use client";
+
 export default function NewsletterBand() {
   return (
     <section

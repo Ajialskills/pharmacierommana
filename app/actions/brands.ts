@@ -4,15 +4,6 @@ import { revalidatePath } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { Brand } from "@/types";
 
-function slugify(str: string) {
-  return str
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
-
 export async function getBrands(): Promise<Brand[]> {
   const supabase = createAdminClient();
   const { data, error } = await supabase
@@ -23,39 +14,26 @@ export async function getBrands(): Promise<Brand[]> {
   return data ?? [];
 }
 
-export async function createBrand(formData: FormData) {
+interface BrandPayload {
+  name: string;
+  slug: string;
+  logo_url?: string | null;
+}
+
+export async function createBrand(payload: BrandPayload) {
   const supabase = createAdminClient();
-  const name = formData.get("name") as string;
-
-  const { error } = await supabase.from("brands").insert({
-    slug: slugify(name),
-    name,
-    logo_url: (formData.get("logo_url") as string) || null,
-    description: (formData.get("description") as string) || null,
-    is_featured: formData.get("is_featured") === "true",
-  });
-
+  const { error } = await supabase.from("brands").insert(payload);
   if (error) throw new Error(error.message);
   revalidatePath("/admin/marques");
   revalidatePath("/marques");
 }
 
-export async function updateBrand(id: string, formData: FormData) {
+export async function updateBrand(id: string, payload: BrandPayload) {
   const supabase = createAdminClient();
-  const name = formData.get("name") as string;
-
-  const { error } = await supabase
-    .from("brands")
-    .update({
-      name,
-      logo_url: (formData.get("logo_url") as string) || null,
-      description: (formData.get("description") as string) || null,
-      is_featured: formData.get("is_featured") === "true",
-    })
-    .eq("id", id);
-
+  const { error } = await supabase.from("brands").update(payload).eq("id", id);
   if (error) throw new Error(error.message);
   revalidatePath("/admin/marques");
+  revalidatePath(`/marques/${payload.slug}`);
 }
 
 export async function deleteBrand(id: string) {
@@ -63,4 +41,25 @@ export async function deleteBrand(id: string) {
   const { error } = await supabase.from("brands").delete().eq("id", id);
   if (error) throw new Error(error.message);
   revalidatePath("/admin/marques");
+}
+
+export async function getFeaturedBrands(): Promise<Brand[]> {
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("brands")
+    .select("*")
+    .eq("is_featured", true)
+    .order("name");
+  if (error) throw new Error(error.message);
+  return data ?? [];
+}
+
+export async function getBrandBySlug(slug: string): Promise<Brand | null> {
+  const supabase = createAdminClient();
+  const { data } = await supabase
+    .from("brands")
+    .select("*")
+    .eq("slug", slug)
+    .single();
+  return data ?? null;
 }

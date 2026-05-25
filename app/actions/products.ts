@@ -88,6 +88,17 @@ export async function deleteProduct(id: string) {
   revalidatePath("/");
 }
 
+export async function getProductById(id: string): Promise<Product | null> {
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("id", id)
+    .single();
+  if (error) return null;
+  return data as Product;
+}
+
 export async function getProducts(): Promise<Product[]> {
   const supabase = createAdminClient();
   const { data, error } = await supabase
