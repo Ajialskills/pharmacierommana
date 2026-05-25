@@ -128,8 +128,8 @@ export default function BestSellersSection({ products, filterCategories }: Props
         {/* Products grid */}
         {filtered.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-[var(--spacing-gutter)]">
-            {filtered.slice(0, 5).map((p) => (
-              <ProductCard key={p.id} product={p} showBadge={false} />
+            {filtered.slice(0, 5).map((p, i) => (
+              <ProductCard key={p.id} product={p} showBadge={false} priority={i === 0} />
             ))}
           </div>
         ) : (

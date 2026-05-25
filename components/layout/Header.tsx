@@ -42,6 +42,13 @@ export default async function Header() {
   });
 
   return (
+    <>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:bg-[var(--color-primary)] focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:font-semibold focus:text-sm"
+      >
+        Aller au contenu principal
+      </a>
     <header className="sticky top-0 z-[100] bg-white border-b border-[var(--color-border-subtle)] shadow-sm">
       {/* Main bar */}
       <div className="w-full px-8 h-20 flex items-center gap-6">
@@ -146,5 +153,6 @@ export default async function Header() {
         </ul>
       </nav>
     </header>
+    </>
   );
 }

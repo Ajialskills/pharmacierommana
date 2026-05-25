@@ -11,10 +11,17 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const supabase = await createClient();
-  const { data } = await supabase.from("articles").select("title, excerpt").eq("slug", slug).single();
+  const { data } = await supabase.from("articles").select("title, excerpt, cover_image").eq("slug", slug).single();
+  const title = data?.title ?? "Le Carnet";
+  const description = data?.excerpt ?? undefined;
   return {
-    title: data?.title ? `${data.title} — Le Carnet — Pharmacie Rommana` : "Le Carnet",
-    description: data?.excerpt ?? undefined,
+    title,
+    description,
+    openGraph: {
+      title: `${title} — Le Carnet — Pharmacie Rommana`,
+      description,
+      images: data?.cover_image ? [{ url: data.cover_image, width: 1200, height: 630, alt: title }] : undefined,
+    },
   };
 }
 

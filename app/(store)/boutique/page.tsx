@@ -1,4 +1,15 @@
+import type { Metadata } from "next";
 import { createClient as createServerClient } from "@/lib/supabase/server";
+
+export const metadata: Metadata = {
+  title: "Boutique",
+  description:
+    "Parcourez notre catalogue de produits parapharmaceutiques : soins visage, corps, bébé, hygiène, santé et bien-être. Livraison rapide depuis Tétouan.",
+  openGraph: {
+    title: "Boutique — Pharmacie Rommana",
+    description: "Produits de parapharmacie sélectionnés avec soin. Livraison gratuite dès 400 DH sur Tétouan.",
+  },
+};
 import { getCategories } from "@/app/actions/categories";
 import { getBrands } from "@/app/actions/brands";
 import ProductCard from "@/components/product/ProductCard";

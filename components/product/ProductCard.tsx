@@ -10,9 +10,10 @@ interface ProductCardProps {
   product: Product;
   showBadge?: boolean;
   className?: string;
+  priority?: boolean;
 }
 
-export default function ProductCard({ product, showBadge = true, className = "" }: ProductCardProps) {
+export default function ProductCard({ product, showBadge = true, className = "", priority = false }: ProductCardProps) {
   const { add } = useCart();
   const { toggle, has } = useWishlist();
   const inWishlist = has(product.id);
@@ -42,6 +43,7 @@ export default function ProductCard({ product, showBadge = true, className = "" 
             src={product.images[0]}
             alt={product.name}
             fill
+            priority={priority}
             className="object-contain p-4 group-hover:scale-110 transition-transform duration-500"
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
           />
