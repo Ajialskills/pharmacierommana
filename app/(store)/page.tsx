@@ -6,16 +6,17 @@ import BestSellersSection from "@/components/home/BestSellersSection";
 import BrandsWall from "@/components/home/BrandsWall";
 import QuickActionsGrid from "@/components/pharmacy/QuickActionsGrid";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
+import CarnetSection from "@/components/home/CarnetSection";
 import NewsletterBand from "@/components/home/NewsletterBand";
 import ProductCard from "@/components/product/ProductCard";
-import type { Product, Testimonial, PharmacieDeGarde, Category, Brand } from "@/types";
+import type { Product, Testimonial, PharmacieDeGarde, Category, Brand, Article } from "@/types";
 
 export const revalidate = 3600;
 
 export default async function HomePage() {
   const supabase = await createClient();
 
-  const [promoRes, bestsellersRes, testimonialsRes, gardeRes, categoriesRes, allCategoriesRes, brandsRes] =
+  const [promoRes, bestsellersRes, testimonialsRes, gardeRes, categoriesRes, allCategoriesRes, brandsRes, articlesRes] =
     await Promise.all([
       supabase
         .from("products")
@@ -56,6 +57,12 @@ export default async function HomePage() {
         .eq("is_featured", true)
         .order("name")
         .limit(16),
+      supabase
+        .from("articles")
+        .select("id, slug, title, excerpt, cover_image, published_at")
+        .eq("is_published", true)
+        .order("published_at", { ascending: false })
+        .limit(3),
     ]);
 
   const promoProducts: Product[] = promoRes.data ?? [];
@@ -65,6 +72,7 @@ export default async function HomePage() {
   const categories: Category[] = categoriesRes.data ?? [];
   const allCategories: Category[] = allCategoriesRes.data ?? [];
   const featuredBrands: Brand[] = brandsRes.data ?? [];
+  const recentArticles = (articlesRes.data ?? []) as Pick<Article, "id" | "slug" | "title" | "excerpt" | "cover_image" | "published_at">[];
 
   const catById = new Map(allCategories.map((c) => [c.id, c]));
   const topLevelId = (categoryId: string | null): string | null => {
@@ -165,6 +173,7 @@ export default async function HomePage() {
       )}
 
       <BrandsWall brands={featuredBrands} />
+      <CarnetSection articles={recentArticles} />
       <TestimonialsSection testimonials={testimonials} />
       <NewsletterBand />
     </>
