@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import PageHero from "@/components/layout/PageHero";
 
 export default function ConnexionPage() {
   const router = useRouter();
@@ -31,9 +32,14 @@ export default function ConnexionPage() {
   const inputCls = "w-full border border-[var(--color-border-subtle)] rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]";
 
   return (
-    <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-16">
-      <div className="max-w-sm mx-auto">
-        <h1 className="text-2xl font-bold text-[var(--color-on-surface)] mb-2 text-center">Connexion</h1>
+    <>
+      <PageHero
+        title="Connexion"
+        subtitle="Accédez à votre compte Pharmacie Rommana"
+        crumbs={[{ label: "Connexion" }]}
+      />
+      <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-10">
+      <div className="max-w-[384px] mx-auto">
         <p className="text-sm text-center text-[var(--color-on-surface-variant)] mb-8">
           Pas encore de compte ?{" "}
           <Link href="/inscription" className="text-[var(--color-primary)] font-semibold hover:underline">S&apos;inscrire</Link>
@@ -60,6 +66,7 @@ export default function ConnexionPage() {
           </button>
         </form>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import type { Product } from "@/types";
 import ProductGallery from "./ProductGallery";
 import ProductActions from "./ProductActions";
+import ProductCard from "@/components/product/ProductCard";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -18,7 +20,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     .eq("slug", slug)
     .single();
   const title = data?.meta_title ?? data?.name ?? "Produit";
-  const description = data?.meta_description ?? undefined;
+  const description = data?.meta_description
+    ?? (data?.name ? `Achetez ${data.name} chez Pharmacie Rommana. Livraison rapide depuis Tétouan, Maroc.` : undefined);
   const image = (data?.images as string[] | null)?.[0];
   return {
     title,
@@ -44,6 +47,14 @@ export default async function ProductPage({ params }: PageProps) {
 
   if (!product) notFound();
 
+  const { data: related } = await supabase
+    .from("products")
+    .select("*")
+    .eq("category_id", product.category_id)
+    .eq("is_published", true)
+    .neq("id", product.id)
+    .limit(4);
+
   const p = product as Product & { categories?: { name: string; slug: string }; brands?: { name: string; slug: string } };
 
   const discount =
@@ -54,14 +65,14 @@ export default async function ProductPage({ params }: PageProps) {
   return (
     <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-10">
       {/* Breadcrumb */}
-      <nav className="text-xs text-[var(--color-on-surface-variant)] mb-8 flex items-center gap-1">
-        <a href="/" className="hover:text-[var(--color-primary)]">Accueil</a>
+      <nav aria-label="Fil d'Ariane" className="text-xs text-[var(--color-on-surface-variant)] mb-8 flex items-center gap-1">
+        <Link href="/" className="hover:text-[var(--color-primary)]">Accueil</Link>
         <span>/</span>
-        <a href="/boutique" className="hover:text-[var(--color-primary)]">Boutique</a>
+        <Link href="/boutique" className="hover:text-[var(--color-primary)]">Boutique</Link>
         {p.categories && (
           <>
             <span>/</span>
-            <a href={`/boutique/${p.categories.slug}`} className="hover:text-[var(--color-primary)]">{p.categories.name}</a>
+            <Link href={`/boutique/${p.categories.slug}`} className="hover:text-[var(--color-primary)]">{p.categories.name}</Link>
           </>
         )}
         <span>/</span>
@@ -75,9 +86,9 @@ export default async function ProductPage({ params }: PageProps) {
         {/* Info */}
         <div className="flex flex-col gap-6">
           {p.brands && (
-            <a href={`/marques/${p.brands.slug}`} className="text-xs font-bold uppercase tracking-widest text-[var(--color-secondary)] hover:underline">
+            <Link href={`/marques/${p.brands.slug}`} className="text-xs font-bold uppercase tracking-widest text-[var(--color-secondary)] hover:underline">
               {p.brands.name}
-            </a>
+            </Link>
           )}
 
           <h1 className="text-2xl font-bold text-[var(--color-on-surface)] leading-snug">{p.name}</h1>
@@ -123,6 +134,22 @@ export default async function ProductPage({ params }: PageProps) {
           </div>
         </div>
       </div>
+      {/* Related products */}
+      {related && related.length > 0 && (
+        <section aria-labelledby="related-heading" className="mt-16 border-t border-[var(--color-border-subtle)] pt-12">
+          <h2
+            id="related-heading"
+            className="text-lg font-bold text-[var(--color-on-surface)] mb-6"
+          >
+            Produits similaires
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-[var(--spacing-gutter)]">
+            {related.map((r) => (
+              <ProductCard key={r.id} product={r as Product} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

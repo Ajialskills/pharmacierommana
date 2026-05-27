@@ -26,9 +26,35 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Pharmacy",
+  "name": "Pharmacie Rommana",
+  "url": "https://pharmacierommana.ma",
+  "telephone": "+212539714272",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "344 Av Al Hijra",
+    "addressLocality": "Tétouan",
+    "addressCountry": "MA",
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 35.567009,
+    "longitude": -5.393409,
+  },
+  "currenciesAccepted": "MAD",
+  "paymentAccepted": "Cash, Credit Card",
+};
+
 export default function StoreLayout({ children }: { children: React.ReactNode }) {
   return (
     <Providers>
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <main id="main-content" className="flex-1 pb-16 md:pb-0">{children}</main>
       <Footer />

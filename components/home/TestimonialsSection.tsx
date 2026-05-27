@@ -12,17 +12,17 @@ function StarIcon() {
   );
 }
 
-const INITIAL_COLORS = [
-  { bg: "bg-[color-mix(in_srgb,var(--color-secondary)_15%,transparent)]", text: "text-[var(--color-secondary)]" },
-  { bg: "bg-[color-mix(in_srgb,var(--color-primary)_15%,transparent)]", text: "text-[var(--color-primary)]" },
-  { bg: "bg-[color-mix(in_srgb,var(--color-tertiary)_15%,transparent)]", text: "text-[var(--color-tertiary)]" },
+const HEADER_COLORS = [
+  { header: "bg-[var(--color-primary)]", avatar: "bg-white/20 text-white" },
+  { header: "bg-[var(--color-secondary)]", avatar: "bg-white/20 text-white" },
+  { header: "bg-[var(--color-tertiary)]", avatar: "bg-white/20 text-white" },
 ];
 
 export default function TestimonialsSection({ testimonials }: TestimonialsSectionProps) {
   if (!testimonials.length) return null;
 
   return (
-    <section aria-labelledby="testimonials-heading" className="py-24 bg-white">
+    <section aria-labelledby="testimonials-heading" className="pt-8 pb-24 bg-white">
       <div
         style={{ maxWidth: "var(--spacing-max-width)" }}
         className="mx-auto px-[var(--spacing-lg)]"
@@ -32,45 +32,45 @@ export default function TestimonialsSection({ testimonials }: TestimonialsSectio
           style={{ fontSize: "var(--text-headline-lg)", fontWeight: "var(--text-headline-lg--font-weight)" }}
           className="text-[var(--color-on-background)] text-center mb-16"
         >
-          Nos Fidèles Clients
+          NOS CLIENTS FIDÈLES
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-[var(--spacing-gutter)]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-[var(--spacing-gutter)] items-stretch">
           {testimonials.map((t, i) => {
-            const color = INITIAL_COLORS[i % INITIAL_COLORS.length];
+            const color = HEADER_COLORS[i % HEADER_COLORS.length];
             const isRtl = t.lang === "ar";
 
             return (
               <article
                 key={t.id}
-                className="bg-white p-8 rounded-3xl shadow-sm border border-[var(--color-border-subtle)]"
+                className="rounded-3xl shadow-sm overflow-hidden border border-[var(--color-border-subtle)] flex flex-col"
               >
-                {/* Stars */}
-                <div className="flex gap-0.5 mb-6" aria-label={`${t.rating} étoiles sur 5`}>
-                  {Array.from({ length: t.rating }).map((_, j) => (
-                    <StarIcon key={j} />
-                  ))}
-                </div>
-
-                {/* Quote */}
-                <blockquote
-                  dir={isRtl ? "rtl" : "ltr"}
-                  className="italic text-[var(--color-on-surface-variant)] mb-8 text-base leading-7"
-                >
-                  &ldquo;{t.body}&rdquo;
-                </blockquote>
-
-                {/* Author */}
-                <div className="flex items-center gap-4 border-t border-[var(--color-border-subtle)] pt-6">
-                  <div
-                    className={`w-12 h-12 ${color.bg} ${color.text} rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0`}
-                  >
+                {/* Colored header strip */}
+                <div className={`${color.header} px-8 py-6 flex items-center justify-between gap-4`}>
+                  <div>
+                    <p className="font-bold text-white text-sm">{t.author_name}</p>
+                    <div className="flex gap-0.5 mt-1.5" aria-label={`${t.rating} étoiles sur 5`}>
+                      {Array.from({ length: t.rating }).map((_, j) => (
+                        <svg key={j} width="14" height="14" viewBox="0 0 24 24" fill="white" stroke="none">
+                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                        </svg>
+                      ))}
+                    </div>
+                  </div>
+                  <div className={`w-12 h-12 ${color.avatar} rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0`}>
                     {t.author_initials}
                   </div>
-                  <div>
-                    <p className="font-bold text-[var(--color-on-surface)] text-sm">{t.author_name}</p>
-                    <span className="text-xs text-[var(--color-on-surface-variant)]">{t.time_ago}</span>
-                  </div>
+                </div>
+
+                {/* White body */}
+                <div className="bg-white px-8 py-7 flex flex-col flex-1">
+                  <blockquote
+                    dir={isRtl ? "rtl" : "ltr"}
+                    className="italic text-[var(--color-on-surface-variant)] text-base leading-7 line-clamp-4 flex-1"
+                  >
+                    &ldquo;{t.body}&rdquo;
+                  </blockquote>
+                  <p className="text-xs text-[var(--color-on-surface-variant)] mt-4">{t.time_ago}</p>
                 </div>
               </article>
             );

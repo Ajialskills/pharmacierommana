@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import PageHero from "@/components/layout/PageHero";
 
 export default function InscriptionPage() {
   const router = useRouter();
@@ -50,7 +51,7 @@ export default function InscriptionPage() {
   if (success) {
     return (
       <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-16">
-        <div className="max-w-sm mx-auto text-center">
+        <div className="max-w-[384px] mx-auto text-center">
           <div className="w-16 h-16 rounded-full bg-[color-mix(in_srgb,var(--color-success-green)_15%,transparent)] flex items-center justify-center mx-auto mb-6">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ color: "var(--color-success-green)" }}><polyline points="20 6 9 17 4 12" /></svg>
           </div>
@@ -67,9 +68,14 @@ export default function InscriptionPage() {
   }
 
   return (
-    <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-16">
-      <div className="max-w-sm mx-auto">
-        <h1 className="text-2xl font-bold text-[var(--color-on-surface)] mb-2 text-center">Créer un compte</h1>
+    <>
+      <PageHero
+        title="Créer un compte"
+        subtitle="Rejoignez Pharmacie Rommana pour suivre vos commandes et gérer vos favoris"
+        crumbs={[{ label: "Inscription" }]}
+      />
+      <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-10">
+      <div className="max-w-[384px] mx-auto">
         <p className="text-sm text-center text-[var(--color-on-surface-variant)] mb-8">
           Déjà inscrit ?{" "}
           <Link href="/connexion" className="text-[var(--color-primary)] font-semibold hover:underline">Se connecter</Link>
@@ -104,6 +110,7 @@ export default function InscriptionPage() {
           </button>
         </form>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

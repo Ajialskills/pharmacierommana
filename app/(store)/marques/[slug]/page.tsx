@@ -15,9 +15,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const brand = await getBrandBySlug(slug);
   if (!brand) return { title: "Marque introuvable" };
+  const description = brand.description ?? `Produits ${brand.name} disponibles chez Pharmacie Rommana à Tétouan. Livraison rapide partout au Maroc.`;
   return {
     title: `${brand.name} — Pharmacie Rommana`,
-    description: brand.description ?? `Produits ${brand.name} disponibles chez Pharmacie Rommana.`,
+    description,
+    openGraph: {
+      title: `${brand.name} — Pharmacie Rommana`,
+      description,
+      images: brand.logo_url ? [{ url: brand.logo_url, width: 400, height: 400, alt: brand.name }] : undefined,
+    },
   };
 }
 

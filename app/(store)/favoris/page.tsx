@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useWishlist } from "@/components/wishlist/WishlistContext";
 import { createClient } from "@/lib/supabase/client";
 import ProductCard from "@/components/product/ProductCard";
+import PageHero from "@/components/layout/PageHero";
 import type { Product } from "@/types";
 
 export default function FavorisPage() {
@@ -31,9 +32,13 @@ export default function FavorisPage() {
   }, [ids]);
 
   return (
-    <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-10">
-      <h1 className="text-xl font-bold text-[var(--color-on-surface)] mb-2">Mes favoris</h1>
-      <p className="text-sm text-[var(--color-on-surface-variant)] mb-8">{count} produit{count !== 1 ? "s" : ""} sauvegardé{count !== 1 ? "s" : ""}</p>
+    <>
+      <PageHero
+        title="Mes Favoris"
+        subtitle={`${count} produit${count !== 1 ? "s" : ""} sauvegardé${count !== 1 ? "s" : ""}`}
+        crumbs={[{ label: "Favoris" }]}
+      />
+      <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-10">
 
       {count === 0 ? (
         <div className="text-center py-24">
@@ -56,6 +61,7 @@ export default function FavorisPage() {
           {products.map((p) => <ProductCard key={p.id} product={p} />)}
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

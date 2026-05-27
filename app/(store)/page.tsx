@@ -1,4 +1,14 @@
+import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
+
+export const metadata: Metadata = {
+  title: "Pharmacie Rommana — Parapharmacie en ligne à Tétouan",
+  description: "Pharmacie Rommana, basée à Tétouan, est une parapharmacie en ligne spécialisée dans les produits de soin, d'hygiène et de bien-être. Livraison gratuite dès 400 DH sur Tétouan.",
+  openGraph: {
+    title: "Pharmacie Rommana — Parapharmacie en ligne à Tétouan",
+    description: "Produits de parapharmacie de qualité. Livraison rapide partout au Maroc.",
+  },
+};
 import HeroSection from "@/components/home/HeroSection";
 import FeaturesStrip from "@/components/home/FeaturesStrip";
 import CategoriesSection from "@/components/home/CategoriesSection";
@@ -121,7 +131,7 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <section aria-labelledby="promos-heading" className="pt-10 pb-24" id="promotions">
+          <section aria-labelledby="promos-heading" className="pt-10 pb-6" id="promotions">
             {/* Heading — padded */}
             <div
               style={{ maxWidth: "var(--spacing-max-width)" }}

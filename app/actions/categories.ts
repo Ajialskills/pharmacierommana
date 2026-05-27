@@ -20,7 +20,7 @@ export async function getCategories(): Promise<Category[]> {
     .from("categories")
     .select("*")
     .order("sort_order");
-  if (error) throw new Error(error.message);
+  if (error) { console.error(error); throw new Error("Erreur lors du chargement"); }
   return data ?? [];
 }
 
@@ -37,7 +37,7 @@ export async function createCategory(formData: FormData) {
     sort_order: parseInt(formData.get("sort_order") as string) || 0,
   });
 
-  if (error) throw new Error(error.message);
+  if (error) { console.error(error); throw new Error("Erreur lors de la création"); }
   revalidatePath("/admin/categories");
   revalidatePath("/boutique");
 }
@@ -57,7 +57,7 @@ export async function updateCategory(id: string, formData: FormData) {
     })
     .eq("id", id);
 
-  if (error) throw new Error(error.message);
+  if (error) { console.error(error); throw new Error("Erreur lors de la mise à jour"); }
   revalidatePath("/admin/categories");
 }
 
@@ -65,6 +65,6 @@ export async function deleteCategory(id: string) {
   await requireAdmin();
   const supabase = createAdminClient();
   const { error } = await supabase.from("categories").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) { console.error(error); throw new Error("Erreur lors de la suppression"); }
   revalidatePath("/admin/categories");
 }

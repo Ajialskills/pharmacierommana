@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getCategories } from "@/app/actions/categories";
 import type { Category } from "@/types";
+import PageHero from "@/components/layout/PageHero";
 
 export const metadata: Metadata = {
   title: "Catégories — Pharmacie Rommana",
@@ -20,13 +21,13 @@ export default async function CategoriesPage() {
   }, {});
 
   return (
-    <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-12">
-      <div className="mb-10">
-        <h1 className="text-2xl font-bold text-[var(--color-on-surface)]">Catégories</h1>
-        <p className="text-sm text-[var(--color-on-surface-variant)] mt-1">
-          Tous nos produits organisés par famille
-        </p>
-      </div>
+    <>
+      <PageHero
+        title="Catégories"
+        subtitle="Tous nos produits organisés par famille"
+        crumbs={[{ label: "Catégories" }]}
+      />
+      <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-10">
 
       {topLevel.length === 0 ? (
         <div className="text-center py-24 text-[var(--color-on-surface-variant)]">
@@ -69,6 +70,7 @@ export default async function CategoriesPage() {
           })}
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

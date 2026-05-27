@@ -10,20 +10,18 @@ export default function BrandsWall({ brands }: Props) {
   if (brands.length === 0) return null;
 
   return (
-    <section aria-labelledby="brands-heading" className="py-16 bg-[var(--color-surface-container-low)]">
+    <section aria-labelledby="brands-heading" className="pb-8 bg-[var(--color-surface-container-low)]">
       <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)]">
-        <div className="flex items-end justify-between mb-8">
-          <div>
-            <h2 id="brands-heading" className="text-2xl font-bold text-[var(--color-on-background)]">
-              Nos marques
-            </h2>
-            <p className="text-sm text-[var(--color-on-surface-variant)] mt-1">
-              Des marques de confiance sélectionnées par notre équipe
-            </p>
-          </div>
+        <div className="flex flex-col items-center text-center mb-10">
+          <h2 id="brands-heading" className="text-4xl font-bold text-[var(--color-on-background)] uppercase tracking-wide">
+            Nos marques
+          </h2>
+          <p className="text-base text-[var(--color-on-surface-variant)] mt-2">
+            Des marques de confiance sélectionnées par notre équipe
+          </p>
           <Link
             href="/marques"
-            className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-[var(--color-primary)] hover:underline"
+            className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-[var(--color-primary)] hover:underline"
           >
             Toutes les marques
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -31,28 +29,29 @@ export default function BrandsWall({ brands }: Props) {
             </svg>
           </Link>
         </div>
+      </div>
 
-        <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
-          {brands.map((brand) => (
+      <div className="w-full px-[var(--spacing-lg)]">
+        <div className="flex gap-4 justify-between">
+          {brands.slice(0, 10).map((brand) => (
             <Link
               key={brand.id}
               href={`/marques/${brand.slug}`}
-              className="group flex items-center gap-2.5 bg-white border border-[var(--color-border-subtle)] rounded-xl px-4 py-2.5 hover:shadow-sm hover:border-[var(--color-primary)] transition-all"
+              className="group relative flex flex-col items-center justify-center gap-5 py-10 flex-1 bg-white border border-[var(--color-border-subtle)] rounded-2xl shadow-sm hover:shadow-md hover:border-[var(--color-primary)] transition-all min-w-0 overflow-hidden"
             >
-              {brand.logo_url ? (
+              {brand.logo_url && (
                 <Image
                   src={brand.logo_url}
                   alt={brand.name}
-                  width={24}
-                  height={24}
-                  className="w-6 h-6 object-contain"
+                  width={128}
+                  height={128}
+                  className="relative z-10 w-32 h-32 object-contain grayscale group-hover:grayscale-0 transition-all"
                 />
-              ) : (
-                <span className="w-6 h-6 rounded flex items-center justify-center bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent)] text-[var(--color-primary)] font-bold text-xs">
-                  {brand.name.charAt(0)}
-                </span>
               )}
-              <span className="text-sm font-semibold text-[var(--color-on-surface)] group-hover:text-[var(--color-primary)] transition-colors">
+              <span
+                className="relative z-10 text-2xl text-center text-[var(--color-on-surface-variant)] group-hover:text-[var(--color-primary)] transition-colors leading-tight"
+                style={{ fontFamily: "Georgia, 'Times New Roman', serif", fontStyle: "italic" }}
+              >
                 {brand.name}
               </span>
             </Link>

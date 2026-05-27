@@ -15,12 +15,13 @@ function slugify(str: string) {
 }
 
 export async function getArticles(): Promise<Article[]> {
+  await requireAdmin();
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("articles")
     .select("*")
     .order("published_at", { ascending: false });
-  if (error) throw new Error(error.message);
+  if (error) { console.error(error); throw new Error("Erreur lors du chargement"); }
   return data ?? [];
 }
 
@@ -38,7 +39,7 @@ export async function getPublishedArticles(): Promise<Article[]> {
     .select("*")
     .eq("is_published", true)
     .order("published_at", { ascending: false });
-  if (error) throw new Error(error.message);
+  if (error) { console.error(error); throw new Error("Erreur lors du chargement"); }
   return data ?? [];
 }
 
@@ -55,9 +56,9 @@ export async function createArticle(formData: FormData) {
     is_published: formData.get("is_published") === "true",
     published_at: formData.get("is_published") === "true" ? new Date().toISOString() : null,
   });
-  if (error) throw new Error(error.message);
+  if (error) { console.error(error); throw new Error("Erreur lors de la création"); }
   revalidatePath("/admin/carnet");
-  revalidatePath("/le-carnet");
+  revalidatePath("/blog");
 }
 
 export async function updateArticle(id: string, formData: FormData) {
@@ -75,17 +76,17 @@ export async function updateArticle(id: string, formData: FormData) {
     is_published: formData.get("is_published") === "true",
     updated_at: new Date().toISOString(),
   }).eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) { console.error(error); throw new Error("Erreur lors de la mise à jour"); }
   revalidatePath("/admin/carnet");
-  revalidatePath("/le-carnet");
-  if (existing?.slug) revalidatePath(`/le-carnet/${existing.slug}`);
+  revalidatePath("/blog");
+  if (existing?.slug) revalidatePath(`/blog/${existing.slug}`);
 }
 
 export async function deleteArticle(id: string) {
   await requireAdmin();
   const supabase = createAdminClient();
   const { error } = await supabase.from("articles").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) { console.error(error); throw new Error("Erreur lors de la suppression"); }
   revalidatePath("/admin/carnet");
-  revalidatePath("/le-carnet");
+  revalidatePath("/blog");
 }

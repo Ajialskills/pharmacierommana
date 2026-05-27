@@ -24,6 +24,13 @@ export async function createProduct(formData: FormData) {
     ? parseFloat(formData.get("sale_price") as string)
     : null;
 
+  let images: unknown[] = [];
+  try {
+    images = JSON.parse((formData.get("images") as string) || "[]");
+  } catch {
+    images = [];
+  }
+
   const payload = {
     slug: slugify(name),
     name,
@@ -33,7 +40,7 @@ export async function createProduct(formData: FormData) {
     price,
     sale_price,
     stock: parseInt(formData.get("stock") as string) || 0,
-    images: JSON.parse((formData.get("images") as string) || "[]"),
+    images,
     featured_promo: formData.get("featured_promo") === "true",
     featured_bestseller: formData.get("featured_bestseller") === "true",
     is_published: formData.get("is_published") !== "false",
@@ -42,7 +49,7 @@ export async function createProduct(formData: FormData) {
   };
 
   const { error } = await supabase.from("products").insert(payload);
-  if (error) throw new Error(error.message);
+  if (error) { console.error(error); throw new Error("Erreur lors de la création"); }
 
   revalidatePath("/admin/produits");
   revalidatePath("/boutique");
@@ -59,6 +66,13 @@ export async function updateProduct(id: string, formData: FormData) {
     ? parseFloat(formData.get("sale_price") as string)
     : null;
 
+  let images: unknown[] = [];
+  try {
+    images = JSON.parse((formData.get("images") as string) || "[]");
+  } catch {
+    images = [];
+  }
+
   const payload = {
     name,
     brand_id: (formData.get("brand_id") as string) || null,
@@ -67,7 +81,7 @@ export async function updateProduct(id: string, formData: FormData) {
     price,
     sale_price,
     stock: parseInt(formData.get("stock") as string) || 0,
-    images: JSON.parse((formData.get("images") as string) || "[]"),
+    images,
     featured_promo: formData.get("featured_promo") === "true",
     featured_bestseller: formData.get("featured_bestseller") === "true",
     is_published: formData.get("is_published") !== "false",
@@ -76,7 +90,7 @@ export async function updateProduct(id: string, formData: FormData) {
   };
 
   const { error } = await supabase.from("products").update(payload).eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) { console.error(error); throw new Error("Erreur lors de la mise à jour"); }
 
   revalidatePath("/admin/produits");
   revalidatePath(`/produit/${formData.get("slug")}`);
@@ -87,12 +101,13 @@ export async function deleteProduct(id: string) {
   await requireAdmin();
   const supabase = createAdminClient();
   const { error } = await supabase.from("products").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) { console.error(error); throw new Error("Erreur lors de la suppression"); }
   revalidatePath("/admin/produits");
   revalidatePath("/");
 }
 
 export async function getProductById(id: string): Promise<Product | null> {
+  await requireAdmin();
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("products")
@@ -104,11 +119,24 @@ export async function getProductById(id: string): Promise<Product | null> {
 }
 
 export async function getProducts(): Promise<Product[]> {
+  await requireAdmin();
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("products")
     .select("*, categories(name), brands(name)")
     .order("created_at", { ascending: false });
-  if (error) throw new Error(error.message);
+  if (error) { console.error(error); throw new Error("Erreur lors du chargement"); }
+  return (data as unknown as Product[]) ?? [];
+}
+
+export async function getPublishedProducts(): Promise<Product[]> {
+  const { createClient } = await import("@/lib/supabase/server");
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*, categories(name), brands(name)")
+    .eq("is_published", true)
+    .order("created_at", { ascending: false });
+  if (error) { console.error(error); throw new Error("Erreur lors du chargement"); }
   return (data as unknown as Product[]) ?? [];
 }

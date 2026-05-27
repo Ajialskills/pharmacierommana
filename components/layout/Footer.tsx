@@ -2,19 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 const LINKS_UTILES = [
-  { label: "À Propos", href: "/notre-histoire" },
   { label: "Boutique", href: "/boutique" },
-  { label: "Blog Santé", href: "/le-carnet" },
-  { label: "FAQ", href: "/contact#faq" },
+  { label: "Blog Santé", href: "/blog" },
+  { label: "Livraison", href: "/livraison" },
+  { label: "Retours", href: "/retours" },
+  { label: "FAQ", href: "/faq" },
   { label: "Contact", href: "/contact" },
-];
-
-const CATEGORIES = [
-  { label: "Bébé et Maman", href: "/boutique/bebe-et-maman" },
-  { label: "Soins Visage", href: "/boutique/visage" },
-  { label: "Soins Corps", href: "/boutique/corps" },
-  { label: "Hygiène", href: "/boutique/hygiene" },
-  { label: "Solaire", href: "/boutique/solaire" },
 ];
 
 export default function Footer() {
@@ -24,7 +17,7 @@ export default function Footer() {
         style={{ maxWidth: "var(--spacing-max-width)" }}
         className="mx-auto px-[var(--spacing-lg)] pt-[var(--spacing-xxl)]"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[var(--spacing-gutter)] mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-[var(--spacing-gutter)] mb-16">
           {/* Brand col */}
           <div className="space-y-6">
             <Image
@@ -48,25 +41,6 @@ export default function Footer() {
             </h4>
             <ul className="space-y-4">
               {LINKS_UTILES.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="text-[var(--color-on-surface-variant)] hover:text-[var(--color-primary)] transition-colors text-sm"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Catégories */}
-          <div>
-            <h4 className="font-semibold text-[var(--color-on-surface)] mb-6 text-base">
-              Catégories
-            </h4>
-            <ul className="space-y-4">
-              {CATEGORIES.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
@@ -107,6 +81,23 @@ export default function Footer() {
                 </a>
               </li>
             </ul>
+          </div>
+
+          {/* Map placeholder — spans 2 cols */}
+          <div className="lg:col-span-2">
+            <h4 className="font-semibold text-[var(--color-on-surface)] mb-6 text-base">
+              Nous trouver
+            </h4>
+            <address className="not-italic space-y-1.5 text-sm text-[var(--color-on-surface-variant)]">
+              <p className="font-semibold text-[var(--color-on-surface)]">Pharmacie Rommana</p>
+              <p>344 Av Al Hijra, Tétouan</p>
+              <p>
+                Tél&nbsp;:{" "}
+                <a href="tel:0539714272" className="hover:text-[var(--color-primary)] transition-colors">
+                  05 39 71 42 72
+                </a>
+              </p>
+            </address>
           </div>
         </div>
 

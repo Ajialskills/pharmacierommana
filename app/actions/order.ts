@@ -20,38 +20,69 @@ export interface CreateOrderInput {
 }
 
 export async function createOrder(input: CreateOrderInput): Promise<{ id: string; order_number: string }> {
+  if (input.items.length === 0) throw new Error("Commande vide");
+
   const phone = input.customer_phone.trim();
   if (phone.replace(/[\s+\-]/g, "").length < 10) {
     throw new Error("Numéro de téléphone invalide");
   }
 
+  // Cap string fields
+  const notes = (input.notes ?? "").slice(0, 500) || null;
+  const shipping_address = input.shipping_address.slice(0, 300);
+
   const supabase = createAdminClient();
 
-  const order_number = `PR-${Date.now().toString(36).toUpperCase()}`;
+  // Recompute totals server-side from DB prices
+  const productIds = input.items.map((item) => item.product_id);
+  const { data: dbProducts, error: productsError } = await supabase
+    .from("products")
+    .select("id, price, sale_price")
+    .in("id", productIds);
+
+  if (productsError || !dbProducts) throw new Error("Erreur lors du chargement des produits");
+
+  const priceMap = new Map(dbProducts.map((p) => [p.id, p]));
+
+  const enrichedItems = input.items.map((item) => {
+    const product = priceMap.get(item.product_id);
+    if (!product) throw new Error("Produit introuvable");
+    const unit_price = product.sale_price ?? product.price;
+    return { ...item, unit_price };
+  });
+
+  const subtotal = enrichedItems.reduce((sum, item) => sum + item.unit_price * item.quantity, 0);
+
+  const isTetouanFree = subtotal >= 400 && input.shipping_city.toLowerCase() === "tétouan";
+  const isNationalFree = subtotal >= 800;
+  const shipping_cost = isTetouanFree || isNationalFree ? 0 : 30;
+  const total_amount = subtotal + shipping_cost;
+
+  const order_number = `PR-${crypto.randomUUID().split("-")[0].toUpperCase()}`;
 
   const { data: order, error: orderError } = await supabase
     .from("orders")
     .insert({
       order_number,
-      status: "pending",
+      status: "awaiting_confirmation",
       payment_method: input.payment_method,
       payment_status: input.payment_method === "cod" ? "pending" : "awaiting",
       customer_name: input.customer_name,
       customer_email: input.customer_email,
       customer_phone: input.customer_phone,
-      shipping_address: input.shipping_address,
+      shipping_address,
       shipping_city: input.shipping_city,
-      subtotal: input.subtotal,
-      shipping_cost: input.shipping_cost,
-      total_amount: input.total_amount,
-      notes: input.notes ?? null,
+      subtotal,
+      shipping_cost,
+      total_amount,
+      notes,
     })
     .select("id, order_number")
     .single();
 
-  if (orderError || !order) throw new Error(orderError?.message ?? "Erreur création commande");
+  if (orderError || !order) throw new Error("Erreur lors de la création de la commande");
 
-  const orderItems = input.items.map((item) => ({
+  const orderItems = enrichedItems.map((item) => ({
     order_id: order.id,
     product_id: item.product_id,
     quantity: item.quantity,
@@ -62,7 +93,7 @@ export async function createOrder(input: CreateOrderInput): Promise<{ id: string
   const { error: itemsError } = await supabase.from("order_items").insert(orderItems);
   if (itemsError) {
     await supabase.from("orders").delete().eq("id", order.id);
-    throw new Error(itemsError.message);
+    throw new Error("Erreur lors de la création des articles de commande");
   }
 
   revalidatePath("/admin/commandes");

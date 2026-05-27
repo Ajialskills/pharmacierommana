@@ -11,7 +11,7 @@ export async function getBrands(): Promise<Brand[]> {
     .from("brands")
     .select("*")
     .order("name");
-  if (error) throw new Error(error.message);
+  if (error) { console.error(error); throw new Error("Erreur lors du chargement"); }
   return data ?? [];
 }
 
@@ -25,7 +25,7 @@ export async function createBrand(payload: BrandPayload) {
   await requireAdmin();
   const supabase = createAdminClient();
   const { error } = await supabase.from("brands").insert(payload);
-  if (error) throw new Error(error.message);
+  if (error) { console.error(error); throw new Error("Erreur lors de la création"); }
   revalidatePath("/admin/marques");
   revalidatePath("/marques");
 }
@@ -34,7 +34,7 @@ export async function updateBrand(id: string, payload: BrandPayload) {
   await requireAdmin();
   const supabase = createAdminClient();
   const { error } = await supabase.from("brands").update(payload).eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) { console.error(error); throw new Error("Erreur lors de la mise à jour"); }
   revalidatePath("/admin/marques");
   revalidatePath("/marques");
   revalidatePath(`/marques/${payload.slug}`);
@@ -44,7 +44,7 @@ export async function deleteBrand(id: string) {
   await requireAdmin();
   const supabase = createAdminClient();
   const { error } = await supabase.from("brands").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) { console.error(error); throw new Error("Erreur lors de la suppression"); }
   revalidatePath("/admin/marques");
 }
 
@@ -55,7 +55,7 @@ export async function getFeaturedBrands(): Promise<Brand[]> {
     .select("*")
     .eq("is_featured", true)
     .order("name");
-  if (error) throw new Error(error.message);
+  if (error) { console.error(error); throw new Error("Erreur lors du chargement"); }
   return data ?? [];
 }
 

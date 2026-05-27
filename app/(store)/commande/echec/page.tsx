@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function EchecPage() {
   return (
     <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-20">
-      <div className="max-w-md mx-auto text-center">
+      <div className="max-w-[448px] mx-auto text-center">
         <div className="w-20 h-20 rounded-full bg-[color-mix(in_srgb,var(--color-error)_15%,transparent)] flex items-center justify-center mx-auto mb-6">
           <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ color: "var(--color-error)" }}>
             <circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" />

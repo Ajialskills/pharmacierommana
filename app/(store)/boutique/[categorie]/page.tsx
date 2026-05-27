@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { createClient as createServerClient } from "@/lib/supabase/server";
 import { getCategories } from "@/app/actions/categories";
 import { getBrands } from "@/app/actions/brands";
@@ -9,6 +10,21 @@ import type { Product, Category } from "@/types";
 interface PageProps {
   params: Promise<{ categorie: string }>;
   searchParams: Promise<{ page?: string; marque?: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { categorie: slug } = await params;
+  const categories = await getCategories();
+  const category = categories.find((c: Category) => c.slug === slug);
+  if (!category) return { title: "Catégorie introuvable" };
+  return {
+    title: `${category.name} — Parapharmacie en ligne`,
+    description: `Découvrez notre sélection de produits ${category.name} chez Pharmacie Rommana à Tétouan. Livraison rapide partout au Maroc.`,
+    openGraph: {
+      title: `${category.name} — Pharmacie Rommana`,
+      description: `Produits ${category.name} de qualité. Livraison gratuite dès 400 DH sur Tétouan.`,
+    },
+  };
 }
 
 const PAGE_SIZE = 20;

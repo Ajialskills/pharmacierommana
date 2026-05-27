@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getBrands } from "@/app/actions/brands";
+import PageHero from "@/components/layout/PageHero";
 
 export const metadata: Metadata = {
   title: "Marques — Pharmacie Rommana",
@@ -12,14 +13,14 @@ export default async function MarquesPage() {
   const brands = await getBrands();
 
   return (
-    <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-12">
-      <div className="mb-10">
-        <h1 className="text-2xl font-bold text-[var(--color-on-surface)]">Nos Marques</h1>
-        <p className="text-sm text-[var(--color-on-surface-variant)] mt-1">
-          {brands.length} marque{brands.length !== 1 ? "s" : ""} disponibles
-        </p>
-      </div>
+    <>
+      <PageHero
+        title="Nos Marques"
+        subtitle={`${brands.length} marque${brands.length !== 1 ? "s" : ""} disponibles`}
+        crumbs={[{ label: "Marques" }]}
+      />
 
+      <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-10">
       {brands.length === 0 ? (
         <div className="text-center py-24 text-[var(--color-on-surface-variant)]">
           <p>Aucune marque pour l&apos;instant.</p>
@@ -54,6 +55,7 @@ export default async function MarquesPage() {
           ))}
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

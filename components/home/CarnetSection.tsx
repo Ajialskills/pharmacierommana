@@ -22,7 +22,7 @@ export default function CarnetSection({ articles }: CarnetSectionProps) {
               style={{ fontSize: "var(--text-label-caps)", letterSpacing: "var(--text-label-caps--letter-spacing)" }}
               className="block text-[var(--color-primary)] font-semibold uppercase mb-2"
             >
-              Le Carnet
+              Blog
             </span>
             <h2
               id="carnet-heading"
@@ -33,7 +33,7 @@ export default function CarnetSection({ articles }: CarnetSectionProps) {
             </h2>
           </div>
           <Link
-            href="/le-carnet"
+            href="/blog"
             className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-primary)] hover:underline"
           >
             Tous les articles
@@ -46,7 +46,7 @@ export default function CarnetSection({ articles }: CarnetSectionProps) {
         <div className="grid lg:grid-cols-5 gap-[var(--spacing-gutter)]">
           {/* Featured article */}
           <Link
-            href={`/le-carnet/${featured.slug}`}
+            href={`/blog/${featured.slug}`}
             className="lg:col-span-3 group relative overflow-hidden rounded-2xl bg-white border border-[var(--color-border-subtle)] hover:shadow-xl transition-shadow"
           >
             {featured.cover_image ? (
@@ -84,7 +84,7 @@ export default function CarnetSection({ articles }: CarnetSectionProps) {
             {rest.slice(0, 2).map((article) => (
               <Link
                 key={article.id}
-                href={`/le-carnet/${article.slug}`}
+                href={`/blog/${article.slug}`}
                 className="group flex gap-4 bg-white border border-[var(--color-border-subtle)] rounded-2xl overflow-hidden hover:shadow-md transition-shadow"
               >
                 {article.cover_image && (
@@ -115,7 +115,7 @@ export default function CarnetSection({ articles }: CarnetSectionProps) {
 
         <div className="mt-8 text-center sm:hidden">
           <Link
-            href="/le-carnet"
+            href="/blog"
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-primary)] hover:underline"
           >
             Tous les articles

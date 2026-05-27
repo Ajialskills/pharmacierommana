@@ -17,7 +17,7 @@ export default function CommandeClient() {
   const [step, setStep] = useState<"address" | "payment" | "confirm">("address");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [paymentMethod, setPaymentMethod] = useState<"cod" | "cmi">("cod");
+  const paymentMethod = "cod";
 
   const [form, setForm] = useState({
     customer_name: "",
@@ -126,30 +126,15 @@ export default function CommandeClient() {
         </section>
 
         {/* Payment */}
-        <section className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-6 space-y-4">
-          <h2 className="font-bold text-[var(--color-on-surface)]">Mode de paiement</h2>
-          {[
-            { value: "cod", label: "Paiement à la livraison", desc: "Payez en cash lors de la réception" },
-            { value: "cmi", label: "Carte bancaire (CMI)", desc: "Paiement sécurisé par carte" },
-          ].map((opt) => (
-            <label
-              key={opt.value}
-              className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-colors ${paymentMethod === opt.value ? "border-[var(--color-primary)] bg-[color-mix(in_srgb,var(--color-primary)_5%,transparent)]" : "border-[var(--color-border-subtle)] hover:border-[var(--color-primary)]"}`}
-            >
-              <input
-                type="radio"
-                name="payment"
-                value={opt.value}
-                checked={paymentMethod === opt.value as "cod" | "cmi"}
-                onChange={() => setPaymentMethod(opt.value as "cod" | "cmi")}
-                className="mt-0.5 accent-[var(--color-primary)]"
-              />
-              <div>
-                <p className="font-semibold text-sm text-[var(--color-on-surface)]">{opt.label}</p>
-                <p className="text-xs text-[var(--color-on-surface-variant)] mt-0.5">{opt.desc}</p>
-              </div>
-            </label>
-          ))}
+        <section className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-6">
+          <h2 className="font-bold text-[var(--color-on-surface)] mb-3">Mode de paiement</h2>
+          <div className="flex items-start gap-3 p-4 rounded-xl border-2 border-[var(--color-primary)] bg-[color-mix(in_srgb,var(--color-primary)_5%,transparent)]">
+            <svg className="mt-0.5 flex-shrink-0" style={{ color: "var(--color-primary)" }} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+            <div>
+              <p className="font-semibold text-sm text-[var(--color-on-surface)]">Paiement à la livraison</p>
+              <p className="text-xs text-[var(--color-on-surface-variant)] mt-0.5">Payez en cash directement lors de la réception de votre colis.</p>
+            </div>
+          </div>
         </section>
 
         <button
@@ -157,7 +142,7 @@ export default function CommandeClient() {
           disabled={submitting || !addressComplete()}
           className="w-full bg-[var(--color-primary)] text-white py-4 rounded-xl font-bold text-sm hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {submitting ? "Traitement en cours…" : "Confirmer la commande"}
+          {submitting ? "Traitement en cours…" : "Passer ma commande"}
         </button>
       </div>
 

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/components/cart/CartContext";
+import PageHero from "@/components/layout/PageHero";
 
 export default function PanierPage() {
   const { items, remove, update, total, count } = useCart();
@@ -24,10 +25,13 @@ export default function PanierPage() {
   const remaining = Math.max(0, FREE_DELIVERY_THRESHOLD - total);
 
   return (
-    <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-10">
-      <h1 className="text-xl font-bold text-[var(--color-on-surface)] mb-8">
-        Panier <span className="text-[var(--color-on-surface-variant)] font-normal">({count} article{count > 1 ? "s" : ""})</span>
-      </h1>
+    <>
+      <PageHero
+        title="Mon Panier"
+        subtitle={`${count} article${count > 1 ? "s" : ""}`}
+        crumbs={[{ label: "Panier" }]}
+      />
+      <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-10">
 
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Items */}
@@ -104,6 +108,7 @@ export default function PanierPage() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

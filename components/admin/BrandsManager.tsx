@@ -90,7 +90,7 @@ export default function BrandsManager({ brands }: Props) {
       )}
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-6 space-y-4 max-w-lg">
+        <form onSubmit={handleSubmit} className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-6 space-y-4 max-w-[512px]">
           <h3 className="font-bold text-[var(--color-on-surface)]">
             {editing ? "Modifier la marque" : "Nouvelle marque"}
           </h3>

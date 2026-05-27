@@ -12,7 +12,7 @@ export default function CartDrawer() {
   return (
     <>
       <div
-        className="fixed inset-0 bg-black/30 z-40 backdrop-blur-sm"
+        className="fixed inset-0 bg-black/30 z-[110] backdrop-blur-sm"
         onClick={closeCart}
         aria-hidden="true"
       />
@@ -20,7 +20,7 @@ export default function CartDrawer() {
         role="dialog"
         aria-modal="true"
         aria-label="Panier"
-        className="fixed right-0 top-0 h-full w-full max-w-sm bg-white z-50 flex flex-col shadow-2xl"
+        className="fixed right-0 top-0 h-full w-full max-w-[384px] bg-white z-[120] flex flex-col shadow-2xl"
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-[var(--color-border-subtle)]">

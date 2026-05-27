@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -7,12 +6,6 @@ const inter = Inter({
   variable: "--font-sans",
   display: "swap",
 });
-
-export const metadata: Metadata = {
-  title: "Pharmacie Rommana — Parapharmacie en ligne à Tétouan",
-  description:
-    "Pharmacie Rommana, basée à Tétouan, est une parapharmacie en ligne spécialisée dans les produits de soin, d'hygiène et de bien-être. Nous proposons des produits de qualité avec une livraison rapide.",
-};
 
 export default function RootLayout({
   children,

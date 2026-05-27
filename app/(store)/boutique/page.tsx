@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { createClient as createServerClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
-  title: "Boutique",
+  title: "Boutique parapharmacie en ligne",
   description:
     "Parcourez notre catalogue de produits parapharmaceutiques : soins visage, corps, bébé, hygiène, santé et bien-être. Livraison rapide depuis Tétouan.",
   openGraph: {
@@ -15,6 +15,8 @@ import { getBrands } from "@/app/actions/brands";
 import ProductCard from "@/components/product/ProductCard";
 import BoutiqueFilters from "@/components/boutique/BoutiqueFilters";
 import type { Product } from "@/types";
+import PageHero from "@/components/layout/PageHero";
+import BoutiqueSearch from "@/components/boutique/BoutiqueSearch";
 
 interface PageProps {
   searchParams: Promise<{
@@ -23,6 +25,7 @@ interface PageProps {
     min?: string;
     max?: string;
     promo?: string;
+    q?: string;
     page?: string;
   }>;
 }
@@ -52,17 +55,20 @@ export default async function BoutiquePage({ searchParams }: PageProps) {
   if (params.min) query = query.gte("price", parseFloat(params.min));
   if (params.max) query = query.lte("price", parseFloat(params.max));
   if (params.promo === "1") query = query.not("sale_price", "is", null);
+  if (params.q) query = query.ilike("name", `%${params.q}%`);
 
   const { data, count } = await query;
   const products = (data as Product[]) ?? [];
   const totalPages = Math.ceil((count ?? 0) / PAGE_SIZE);
 
   return (
-    <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-10">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-[var(--color-on-surface)]">Notre boutique</h1>
-        <p className="text-sm text-[var(--color-on-surface-variant)] mt-1">{count ?? 0} produits disponibles</p>
-      </div>
+    <>
+      <PageHero
+        title="Notre boutique"
+        subtitle={`${count ?? 0} produits disponibles`}
+        crumbs={[{ label: "Boutique" }]}
+      />
+      <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-10">
 
       <div className="flex gap-8">
         {/* Sidebar */}
@@ -72,6 +78,7 @@ export default async function BoutiquePage({ searchParams }: PageProps) {
 
         {/* Grid */}
         <div className="flex-1 min-w-0">
+          <BoutiqueSearch />
           {products.length === 0 ? (
             <div className="text-center py-24 text-[var(--color-on-surface-variant)]">
               <p className="text-lg font-semibold">Aucun produit trouvé</p>
@@ -84,20 +91,51 @@ export default async function BoutiquePage({ searchParams }: PageProps) {
               </div>
 
               {totalPages > 1 && (
-                <div className="flex justify-center gap-2 mt-10">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-                    <a
-                      key={p}
-                      href={`?page=${p}${params.categorie ? `&categorie=${params.categorie}` : ""}${params.marque ? `&marque=${params.marque}` : ""}${params.min ? `&min=${params.min}` : ""}${params.max ? `&max=${params.max}` : ""}${params.promo ? `&promo=${params.promo}` : ""}`}
-                      className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold border transition-colors ${
+                <div className="flex justify-center items-center gap-1 mt-10">
+                  {(() => {
+                    const qs = (p: number) => {
+                      const next = new URLSearchParams();
+                      if (params.categorie) next.set("categorie", params.categorie);
+                      if (params.marque) next.set("marque", params.marque);
+                      if (params.min) next.set("min", params.min);
+                      if (params.max) next.set("max", params.max);
+                      if (params.promo) next.set("promo", params.promo);
+                      if (params.q) next.set("q", params.q);
+                      next.set("page", String(p));
+                      return `?${next.toString()}`;
+                    };
+
+                    const pageLinkCls = (p: number) =>
+                      `min-w-[32px] h-8 px-2 flex items-center justify-center text-sm transition-colors ${
                         p === page
-                          ? "bg-[var(--color-primary)] text-white border-[var(--color-primary)]"
-                          : "border-[var(--color-border-subtle)] text-[var(--color-on-surface-variant)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
-                      }`}
-                    >
-                      {p}
-                    </a>
-                  ))}
+                          ? "font-bold text-[var(--color-primary)] border-b-2 border-[var(--color-primary)]"
+                          : "text-[var(--color-on-surface-variant)] hover:text-[var(--color-primary)]"
+                      }`;
+
+                    const pages: (number | "…")[] = [];
+                    const WING = 2;
+
+                    // Always include page 1
+                    pages.push(1);
+
+                    const rangeStart = Math.max(2, page - WING);
+                    const rangeEnd = Math.min(totalPages - 1, page + WING);
+
+                    if (rangeStart > 2) pages.push("…");
+                    for (let i = rangeStart; i <= rangeEnd; i++) pages.push(i);
+                    if (rangeEnd < totalPages - 1) pages.push("…");
+
+                    // Always include last page
+                    if (totalPages > 1) pages.push(totalPages);
+
+                    return pages.map((p, i) =>
+                      p === "…" ? (
+                        <span key={`ellipsis-${i}`} className="min-w-[32px] h-8 flex items-center justify-center text-sm text-[var(--color-on-surface-variant)]">…</span>
+                      ) : (
+                        <a key={p} href={qs(p)} className={pageLinkCls(p)}>{p}</a>
+                      )
+                    );
+                  })()}
                 </div>
               )}
             </>
@@ -105,5 +143,6 @@ export default async function BoutiquePage({ searchParams }: PageProps) {
         </div>
       </div>
     </div>
+    </>
   );
 }

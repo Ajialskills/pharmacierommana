@@ -38,4 +38,4 @@ export async function uploadToCloudinary(
   return { publicId: data.public_id, url: data.secure_url };
 }
 
-export { CLOUD_NAME, API_KEY, API_SECRET };
+export { CLOUD_NAME };

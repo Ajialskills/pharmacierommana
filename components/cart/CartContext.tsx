@@ -29,14 +29,18 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     try {
       const stored = localStorage.getItem(CART_KEY);
       if (stored) setItems(JSON.parse(stored) as CartItem[]);
-    } catch {}
+    } catch (e) {
+      if (process.env.NODE_ENV === 'development') console.error('Cart storage error:', e);
+    }
   }, []);
 
   // Persist to localStorage on every change
   useEffect(() => {
     try {
       localStorage.setItem(CART_KEY, JSON.stringify(items));
-    } catch {}
+    } catch (e) {
+      if (process.env.NODE_ENV === 'development') console.error('Cart storage error:', e);
+    }
   }, [items]);
 
   const add = useCallback((product: Product, qty = 1) => {
@@ -70,6 +74,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const clear = useCallback(() => setItems([]), []);
+  const openCart = useCallback(() => setIsOpen(true), []);
+  const closeCart = useCallback(() => setIsOpen(false), []);
 
   const total = items.reduce((sum, i) => {
     const price = i.product.sale_price ?? i.product.price;
@@ -79,7 +85,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const count = items.reduce((sum, i) => sum + i.quantity, 0);
 
   return (
-    <CartContext.Provider value={{ items, add, remove, update, clear, total, count, isOpen, openCart: () => setIsOpen(true), closeCart: () => setIsOpen(false) }}>
+    <CartContext.Provider value={{ items, add, remove, update, clear, total, count, isOpen, openCart, closeCart }}>
       {children}
     </CartContext.Provider>
   );

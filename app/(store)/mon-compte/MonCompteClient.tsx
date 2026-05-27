@@ -128,7 +128,7 @@ export default function MonCompteClient({ user, orders }: Props) {
       )}
 
       {tab === "profile" && (
-        <div className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-6 space-y-4 max-w-md">
+        <div className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-6 space-y-4 max-w-[448px]">
           <h2 className="font-bold text-[var(--color-on-surface)]">Informations personnelles</h2>
           <div>
             <p className="text-xs font-semibold text-[var(--color-on-surface-variant)] uppercase tracking-wide mb-1">Email</p>
@@ -157,16 +157,20 @@ export default function MonCompteClient({ user, orders }: Props) {
 }
 
 const STATUS_LABELS: Record<string, string> = {
+  awaiting_confirmation: "En vérification",
   pending: "En attente",
   confirmed: "Confirmée",
+  processing: "En préparation",
   shipped: "Expédiée",
   delivered: "Livrée",
   cancelled: "Annulée",
 };
 
 const STATUS_COLORS: Record<string, string> = {
+  awaiting_confirmation: "bg-orange-100 text-orange-800",
   pending: "bg-yellow-100 text-yellow-800",
   confirmed: "bg-blue-100 text-blue-800",
+  processing: "bg-indigo-100 text-indigo-800",
   shipped: "bg-purple-100 text-purple-800",
   delivered: "bg-green-100 text-green-800",
   cancelled: "bg-red-100 text-red-800",
@@ -213,7 +217,7 @@ function ChangePasswordForm() {
   const inputCls = "w-full border border-[var(--color-border-subtle)] rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]";
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-6 space-y-4 max-w-md">
+    <form onSubmit={handleSubmit} className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-6 space-y-4 max-w-[448px]">
       <h2 className="font-bold text-[var(--color-on-surface)]">Changer le mot de passe</h2>
       {error && <p className="text-sm text-[var(--color-error)]">{error}</p>}
       {success && <p className="text-sm text-[var(--color-success-green)]">Mot de passe mis à jour.</p>}

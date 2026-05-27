@@ -9,20 +9,21 @@ export default async function SuccesPage({ searchParams }: Props) {
 
   return (
     <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-20">
-      <div className="max-w-md mx-auto text-center">
+      <div className="max-w-[448px] mx-auto text-center">
         <div className="w-20 h-20 rounded-full bg-[color-mix(in_srgb,var(--color-success-green)_15%,transparent)] flex items-center justify-center mx-auto mb-6">
           <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ color: "var(--color-success-green)" }}>
             <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
-        <h1 className="text-2xl font-bold text-[var(--color-on-surface)] mb-3">Commande confirmée !</h1>
+        <h1 className="text-2xl font-bold text-[var(--color-on-surface)] mb-3">Commande reçue !</h1>
         {order && (
           <p className="text-sm text-[var(--color-on-surface-variant)] mb-2">
             Numéro de commande : <span className="font-bold text-[var(--color-on-surface)] font-mono">{order}</span>
           </p>
         )}
         <p className="text-sm text-[var(--color-on-surface-variant)] mb-8 leading-relaxed">
-          Votre commande a bien été reçue. Vous serez contacté(e) sous peu pour confirmer la livraison.
+          Votre commande a bien été reçue et est en attente de vérification par la pharmacie.
+          Vous serez contacté(e) dès que la disponibilité des produits est confirmée.
           Pour toute question, n&apos;hésitez pas à nous contacter sur WhatsApp.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
