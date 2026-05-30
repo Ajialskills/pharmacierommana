@@ -28,12 +28,17 @@ export async function getArticles(): Promise<Article[]> {
 export async function getArticleById(id: string): Promise<Article | null> {
   await requireAdmin();
   const supabase = createAdminClient();
-  const { data } = await supabase.from("articles").select("*").eq("id", id).single();
+  const { data, error } = await supabase.from("articles").select("*").eq("id", id).single();
+  if (error) {
+    if (error.code === "PGRST116") return null;
+    throw new Error(error.message);
+  }
   return data;
 }
 
 export async function getPublishedArticles(): Promise<Article[]> {
-  const supabase = createAdminClient();
+  const { createClient } = await import("@/lib/supabase/server");
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("articles")
     .select("*")

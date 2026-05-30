@@ -7,6 +7,8 @@ import ProductGallery from "./ProductGallery";
 import ProductActions from "./ProductActions";
 import ProductCard from "@/components/product/ProductCard";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://pharmacierommana.ma";
+
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
@@ -26,9 +28,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title,
     description,
+    alternates: { canonical: `${SITE_URL}/produit/${slug}` },
     openGraph: {
       title: `${title} — Pharmacie Rommana`,
       description,
+      url: `${SITE_URL}/produit/${slug}`,
       images: image ? [{ url: image, width: 800, height: 800, alt: title }] : undefined,
     },
   };
@@ -62,8 +66,39 @@ export default async function ProductPage({ params }: PageProps) {
       ? Math.round(((p.price - p.sale_price) / p.price) * 100)
       : null;
 
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: p.name,
+    description: p.description ?? undefined,
+    image: (p.images ?? []).slice(0, 3),
+    sku: p.slug,
+    url: `${SITE_URL}/produit/${p.slug}`,
+    brand: p.brands ? { "@type": "Brand", name: p.brands.name } : undefined,
+    offers: {
+      "@type": "Offer",
+      price: (p.sale_price ?? p.price).toFixed(2),
+      priceCurrency: "MAD",
+      availability: (p.stock ?? 0) > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      url: `${SITE_URL}/produit/${p.slug}`,
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Accueil", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Boutique", item: `${SITE_URL}/boutique` },
+      ...(p.categories ? [{ "@type": "ListItem", position: 3, name: p.categories.name, item: `${SITE_URL}/boutique/${p.categories.slug}` }] : []),
+      { "@type": "ListItem", position: p.categories ? 4 : 3, name: p.name, item: `${SITE_URL}/produit/${p.slug}` },
+    ],
+  };
+
   return (
     <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-10">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       {/* Breadcrumb */}
       <nav aria-label="Fil d'Ariane" className="text-xs text-[var(--color-on-surface-variant)] mb-8 flex items-center gap-1">
         <Link href="/" className="hover:text-[var(--color-primary)]">Accueil</Link>

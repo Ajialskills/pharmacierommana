@@ -69,6 +69,7 @@ export default async function Header() {
           <input
             type="text"
             name="q"
+            aria-label="Rechercher des produits"
             placeholder="Rechercher des produits..."
             className="w-full bg-[var(--color-background-soft)] border border-[var(--color-border-subtle)] rounded-full px-6 py-2.5 text-[var(--color-on-surface)] placeholder:text-[var(--color-outline)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition-all text-sm"
           />

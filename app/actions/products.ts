@@ -19,10 +19,14 @@ export async function createProduct(formData: FormData) {
   const supabase = createAdminClient();
 
   const name = formData.get("name") as string;
+  if (!name?.trim()) throw new Error("Nom du produit requis");
+
   const price = parseFloat(formData.get("price") as string);
-  const sale_price = formData.get("sale_price")
-    ? parseFloat(formData.get("sale_price") as string)
-    : null;
+  if (isNaN(price) || price < 0) throw new Error("Prix invalide");
+
+  const salePriceRaw = formData.get("sale_price") as string;
+  const sale_price = salePriceRaw ? parseFloat(salePriceRaw) : null;
+  if (sale_price !== null && (isNaN(sale_price) || sale_price < 0)) throw new Error("Prix promotionnel invalide");
 
   let images: unknown[] = [];
   try {
@@ -61,10 +65,14 @@ export async function updateProduct(id: string, formData: FormData) {
   const supabase = createAdminClient();
 
   const name = formData.get("name") as string;
+  if (!name?.trim()) throw new Error("Nom du produit requis");
+
   const price = parseFloat(formData.get("price") as string);
-  const sale_price = formData.get("sale_price")
-    ? parseFloat(formData.get("sale_price") as string)
-    : null;
+  if (isNaN(price) || price < 0) throw new Error("Prix invalide");
+
+  const salePriceRaw = formData.get("sale_price") as string;
+  const sale_price = salePriceRaw ? parseFloat(salePriceRaw) : null;
+  if (sale_price !== null && (isNaN(sale_price) || sale_price < 0)) throw new Error("Prix promotionnel invalide");
 
   let images: unknown[] = [];
   try {
@@ -92,8 +100,9 @@ export async function updateProduct(id: string, formData: FormData) {
   const { error } = await supabase.from("products").update(payload).eq("id", id);
   if (error) { console.error(error); throw new Error("Erreur lors de la mise à jour"); }
 
+  const { data: updated } = await supabase.from("products").select("slug").eq("id", id).single();
   revalidatePath("/admin/produits");
-  revalidatePath(`/produit/${formData.get("slug")}`);
+  if (updated?.slug) revalidatePath(`/produit/${updated.slug}`);
   revalidatePath("/");
 }
 

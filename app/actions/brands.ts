@@ -6,7 +6,8 @@ import { requireAdmin } from "@/lib/supabase/require-admin";
 import type { Brand } from "@/types";
 
 export async function getBrands(): Promise<Brand[]> {
-  const supabase = createAdminClient();
+  const { createClient } = await import("@/lib/supabase/server");
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("brands")
     .select("*")
@@ -49,7 +50,8 @@ export async function deleteBrand(id: string) {
 }
 
 export async function getFeaturedBrands(): Promise<Brand[]> {
-  const supabase = createAdminClient();
+  const { createClient } = await import("@/lib/supabase/server");
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("brands")
     .select("*")
@@ -60,11 +62,16 @@ export async function getFeaturedBrands(): Promise<Brand[]> {
 }
 
 export async function getBrandBySlug(slug: string): Promise<Brand | null> {
-  const supabase = createAdminClient();
-  const { data } = await supabase
+  const { createClient } = await import("@/lib/supabase/server");
+  const supabase = await createClient();
+  const { data, error } = await supabase
     .from("brands")
     .select("*")
     .eq("slug", slug)
     .single();
+  if (error) {
+    if (error.code === "PGRST116") return null;
+    throw new Error(error.message);
+  }
   return data ?? null;
 }

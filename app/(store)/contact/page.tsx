@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/layout/PageHero";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://pharmacierommana.ma";
+
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Contactez Pharmacie Rommana à Tétouan — Parapharmacie en ligne",
   description: "Contactez Pharmacie Rommana à Tétouan. Tél : 05 39 71 42 72 — WhatsApp : +212 641 33 74 43 — 344 Av Al Hijra, Tétouan. Conseil pharmacien disponible en ligne.",
+  alternates: { canonical: `${SITE_URL}/contact` },
   openGraph: {
-    title: "Contact — Pharmacie Rommana",
+    title: "Contact — Pharmacie Rommana, Tétouan",
     description: "Pharmacie Rommana, 344 Av Al Hijra, Tétouan. Tél : 05 39 71 42 72.",
+    url: `${SITE_URL}/contact`,
   },
 };
 

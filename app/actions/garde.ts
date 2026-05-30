@@ -12,6 +12,7 @@ export interface GardeEntry {
 }
 
 export async function getGardeHistory(): Promise<GardeEntry[]> {
+  await requireAdmin();
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("pharmacie_de_garde")

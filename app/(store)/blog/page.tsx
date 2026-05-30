@@ -4,12 +4,16 @@ import Link from "next/link";
 import { getPublishedArticles } from "@/app/actions/articles";
 import PageHero from "@/components/layout/PageHero";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://pharmacierommana.ma";
+
 export const metadata: Metadata = {
   title: "Blog — Conseils santé et bien-être",
   description: "Articles et conseils santé, hygiène et bien-être par Pharmacie Rommana à Tétouan. Guides pratiques pour prendre soin de vous et de votre famille.",
+  alternates: { canonical: `${SITE_URL}/blog` },
   openGraph: {
     title: "Blog — Pharmacie Rommana",
     description: "Conseils santé et bien-être par vos pharmaciens à Tétouan.",
+    url: `${SITE_URL}/blog`,
   },
 };
 

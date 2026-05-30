@@ -1,11 +1,12 @@
-const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!;
-const API_KEY = process.env.CLOUDINARY_API_KEY!;
-const API_SECRET = process.env.CLOUDINARY_API_SECRET!;
+const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ?? "";
+const API_KEY = process.env.CLOUDINARY_API_KEY ?? "";
+const API_SECRET = process.env.CLOUDINARY_API_SECRET ?? "";
 
 export function cloudinaryUrl(
   publicId: string,
   opts: { width?: number; height?: number; quality?: number } = {}
 ): string {
+  if (!CLOUD_NAME) throw new Error("NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME is not configured");
   const transforms = [
     opts.width ? `w_${opts.width}` : null,
     opts.height ? `h_${opts.height}` : null,
@@ -34,7 +35,8 @@ export async function uploadToCloudinary(
 
   if (!res.ok) throw new Error("Cloudinary upload failed");
 
-  const data = await res.json();
+  const data = await res.json() as { public_id: string; secure_url: string };
+  if (!data.public_id || !data.secure_url) throw new Error("Cloudinary upload: réponse inattendue");
   return { publicId: data.public_id, url: data.secure_url };
 }
 

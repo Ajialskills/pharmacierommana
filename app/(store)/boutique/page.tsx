@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
 import { createClient as createServerClient } from "@/lib/supabase/server";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://pharmacierommana.ma";
+
 export const metadata: Metadata = {
   title: "Boutique parapharmacie en ligne",
   description:
     "Parcourez notre catalogue de produits parapharmaceutiques : soins visage, corps, bébé, hygiène, santé et bien-être. Livraison rapide depuis Tétouan.",
+  alternates: { canonical: `${SITE_URL}/boutique` },
   openGraph: {
     title: "Boutique — Pharmacie Rommana",
     description: "Produits de parapharmacie sélectionnés avec soin. Livraison gratuite dès 400 DH sur Tétouan.",
+    url: `${SITE_URL}/boutique`,
   },
 };
 import { getCategories } from "@/app/actions/categories";

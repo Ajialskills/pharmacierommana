@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/supabase/require-admin";
+import { computeShippingCost } from "@/lib/shipping";
 
 export interface CreateOrderInput {
   customer_name: string;
@@ -53,9 +54,7 @@ export async function createOrder(input: CreateOrderInput): Promise<{ id: string
 
   const subtotal = enrichedItems.reduce((sum, item) => sum + item.unit_price * item.quantity, 0);
 
-  const isTetouanFree = subtotal >= 400 && input.shipping_city.toLowerCase() === "tétouan";
-  const isNationalFree = subtotal >= 800;
-  const shipping_cost = isTetouanFree || isNationalFree ? 0 : 30;
+  const shipping_cost = computeShippingCost(subtotal, input.shipping_city);
   const total_amount = subtotal + shipping_cost;
 
   const order_number = `PR-${crypto.randomUUID().split("-")[0].toUpperCase()}`;
@@ -120,12 +119,24 @@ export async function getOrderById(id: string) {
     .select("*, order_items(*)")
     .eq("id", id)
     .single();
-  if (error) return null;
+  if (error) throw new Error(error.message);
   return data;
 }
 
+const VALID_STATUSES = [
+  "awaiting_confirmation",
+  "confirmed",
+  "processing",
+  "shipped",
+  "delivered",
+  "cancelled",
+] as const;
+
 export async function updateOrderStatus(id: string, status: string) {
   await requireAdmin();
+  if (!(VALID_STATUSES as readonly string[]).includes(status)) {
+    throw new Error(`Statut invalide: ${status}`);
+  }
   const supabase = createAdminClient();
   const { error } = await supabase.from("orders").update({ status }).eq("id", id);
   if (error) throw new Error(error.message);
@@ -144,8 +155,8 @@ export interface UserOrder {
 
 export async function getUserOrders(): Promise<UserOrder[]> {
   const serverClient = await createClient();
-  const { data: { user } } = await serverClient.auth.getUser();
-  if (!user?.email) return [];
+  const { data: { user }, error: authError } = await serverClient.auth.getUser();
+  if (authError || !user?.email) return [];
 
   const supabase = createAdminClient();
   const { data, error } = await supabase
@@ -153,6 +164,6 @@ export async function getUserOrders(): Promise<UserOrder[]> {
     .select("id, order_number, status, payment_method, total_amount, created_at")
     .eq("customer_email", user.email)
     .order("created_at", { ascending: false });
-  if (error) return [];
+  if (error) throw new Error(error.message);
   return data ?? [];
 }

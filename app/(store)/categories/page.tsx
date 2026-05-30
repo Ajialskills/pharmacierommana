@@ -4,9 +4,12 @@ import { getCategories } from "@/app/actions/categories";
 import type { Category } from "@/types";
 import PageHero from "@/components/layout/PageHero";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://pharmacierommana.ma";
+
 export const metadata: Metadata = {
   title: "Catégories — Pharmacie Rommana",
   description: "Parcourez toutes nos catégories de produits parapharmaceutiques.",
+  alternates: { canonical: `${SITE_URL}/categories` },
 };
 
 export default async function CategoriesPage() {

@@ -21,13 +21,17 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
     try {
       const stored = localStorage.getItem(WISHLIST_KEY);
       if (stored) setIds(JSON.parse(stored) as string[]);
-    } catch {}
+    } catch (e) {
+      console.warn("[WishlistContext] Failed to read from localStorage", e);
+    }
   }, []);
 
   useEffect(() => {
     try {
       localStorage.setItem(WISHLIST_KEY, JSON.stringify(ids));
-    } catch {}
+    } catch (e) {
+      console.warn("[WishlistContext] Failed to write to localStorage", e);
+    }
   }, [ids]);
 
   const toggle = useCallback((product: Product) => {

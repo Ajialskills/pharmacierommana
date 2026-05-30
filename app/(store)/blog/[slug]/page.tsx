@@ -3,23 +3,35 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
+import ArticleBody from "@/components/blog/ArticleBody";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://pharmacierommana.ma";
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const supabase = await createClient();
-  const { data } = await supabase.from("articles").select("title, excerpt, cover_image").eq("slug", slug).eq("is_published", true).single();
+  const { data } = await supabase
+    .from("articles")
+    .select("title, excerpt, cover_image, published_at")
+    .eq("slug", slug)
+    .eq("is_published", true)
+    .single();
   const title = data?.title ?? "Blog";
   const description = data?.excerpt ?? undefined;
   return {
-    title,
+    title: `${title} — Pharmacie Rommana`,
     description,
+    alternates: { canonical: `${SITE_URL}/blog/${slug}` },
     openGraph: {
-      title: `${title} — Blog — Pharmacie Rommana`,
+      title: `${title} — Blog Pharmacie Rommana`,
       description,
+      url: `${SITE_URL}/blog/${slug}`,
+      type: "article",
+      publishedTime: data?.published_at ?? undefined,
       images: data?.cover_image ? [{ url: data.cover_image, width: 1200, height: 630, alt: title }] : undefined,
     },
   };
@@ -38,8 +50,26 @@ export default async function ArticlePage({ params }: PageProps) {
 
   if (!article) notFound();
 
+  const blogJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: article.title,
+    description: article.excerpt ?? undefined,
+    image: article.cover_image ? [article.cover_image] : undefined,
+    datePublished: article.published_at ?? undefined,
+    dateModified: article.updated_at ?? article.published_at ?? undefined,
+    url: `${SITE_URL}/blog/${article.slug}`,
+    publisher: {
+      "@type": "Organization",
+      name: "Pharmacie Rommana",
+      url: SITE_URL,
+    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/blog/${article.slug}` },
+  };
+
   return (
     <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd) }} />
       <nav className="text-xs text-[var(--color-on-surface-variant)] mb-8 flex items-center gap-1">
         <Link href="/blog" className="hover:text-[var(--color-primary)]">Blog</Link>
         <span>/</span>
@@ -63,11 +93,7 @@ export default async function ArticlePage({ params }: PageProps) {
           </div>
         )}
 
-        {article.body && (
-          <div className="prose prose-sm max-w-none text-[var(--color-on-surface)] leading-relaxed whitespace-pre-wrap">
-            {article.body}
-          </div>
-        )}
+        {article.body && <ArticleBody body={article.body} />}
 
         <div className="mt-12 pt-8 border-t border-[var(--color-border-subtle)]">
           <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-primary)] hover:underline">

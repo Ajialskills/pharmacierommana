@@ -4,9 +4,12 @@ import type { Metadata } from "next";
 import { getBrands } from "@/app/actions/brands";
 import PageHero from "@/components/layout/PageHero";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://pharmacierommana.ma";
+
 export const metadata: Metadata = {
   title: "Marques — Pharmacie Rommana",
   description: "Découvrez toutes les marques disponibles chez Pharmacie Rommana.",
+  alternates: { canonical: `${SITE_URL}/marques` },
 };
 
 export default async function MarquesPage() {

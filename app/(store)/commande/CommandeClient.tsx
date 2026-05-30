@@ -4,12 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/components/cart/CartContext";
 import { createOrder } from "@/app/actions/order";
+import { computeShippingCost } from "@/lib/shipping";
 
 const CITIES = ["Tétouan", "Martil", "Fnideq", "M'diq", "Chefchaouen", "Autre"];
-const FREE_DELIVERY_TETOUAN = 400;
-const FREE_DELIVERY_OTHER = 800;
-const DELIVERY_FEE_TETOUAN = 30;
-const DELIVERY_FEE_OTHER = 50;
 
 export default function CommandeClient() {
   const router = useRouter();
@@ -37,9 +34,7 @@ export default function CommandeClient() {
     );
   }
 
-  const isTetouan = form.shipping_city === "Tétouan";
-  const freeThreshold = isTetouan ? FREE_DELIVERY_TETOUAN : FREE_DELIVERY_OTHER;
-  const shippingCost = total >= freeThreshold ? 0 : (isTetouan ? DELIVERY_FEE_TETOUAN : DELIVERY_FEE_OTHER);
+  const shippingCost = computeShippingCost(total, form.shipping_city);
   const orderTotal = total + shippingCost;
 
   function set(key: keyof typeof form, val: string) {

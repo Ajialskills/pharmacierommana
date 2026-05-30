@@ -2,10 +2,41 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import { useCart } from "./CartContext";
+
+const FOCUSABLE = 'a[href],button:not([disabled]),input,select,textarea,[tabindex]:not([tabindex="-1"])';
 
 export default function CartDrawer() {
   const { items, remove, update, total, count, isOpen, closeCart } = useCart();
+  const drawerRef = useRef<HTMLElement>(null);
+  const lastFocusRef = useRef<Element | null>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      lastFocusRef.current = document.activeElement;
+      const first = drawerRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE)[0];
+      first?.focus();
+
+      function handleKeyDown(e: KeyboardEvent) {
+        if (e.key === "Escape") { closeCart(); return; }
+        if (e.key !== "Tab") return;
+        const focusable = Array.from(drawerRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? []);
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+        } else {
+          if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+      }
+      document.addEventListener("keydown", handleKeyDown);
+      return () => document.removeEventListener("keydown", handleKeyDown);
+    } else {
+      (lastFocusRef.current as HTMLElement | null)?.focus();
+    }
+  }, [isOpen, closeCart]);
 
   if (!isOpen) return null;
 
@@ -17,6 +48,7 @@ export default function CartDrawer() {
         aria-hidden="true"
       />
       <aside
+        ref={drawerRef}
         role="dialog"
         aria-modal="true"
         aria-label="Panier"

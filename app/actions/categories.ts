@@ -15,7 +15,8 @@ function slugify(str: string) {
 }
 
 export async function getCategories(): Promise<Category[]> {
-  const supabase = createAdminClient();
+  const { createClient } = await import("@/lib/supabase/server");
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("categories")
     .select("*")
