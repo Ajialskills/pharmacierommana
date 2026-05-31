@@ -13,9 +13,6 @@ CREATE POLICY "Anyone can create an order" ON orders
     AND customer_phone IS NOT NULL
     AND char_length(regexp_replace(customer_phone, '[\s+\-]', '', 'g')) >= 8
     AND shipping_address IS NOT NULL
-    AND char_length(trim(shipping_address)) > 0
-    AND shipping_city IS NOT NULL
-    AND char_length(trim(shipping_city)) > 0
     AND payment_method IN ('cod', 'cmi')
-    AND total_amount > 0
+    AND total > 0
   );
