@@ -5,13 +5,13 @@ async function getStats() {
   const supabase = createAdminClient();
   const [products, orders, brands, categories] = await Promise.all([
     supabase.from("products").select("id", { count: "exact", head: true }),
-    supabase.from("orders").select("id, total_amount, status", { count: "exact" }),
+    supabase.from("orders").select("id, total, status", { count: "exact" }),
     supabase.from("brands").select("id", { count: "exact", head: true }),
     supabase.from("categories").select("id", { count: "exact", head: true }),
   ]);
 
   const pendingOrders = orders.data?.filter((o) => o.status === "pending").length ?? 0;
-  const revenue = orders.data?.reduce((sum, o) => sum + (o.total_amount ?? 0), 0) ?? 0;
+  const revenue = orders.data?.reduce((sum, o) => sum + (o.total ?? 0), 0) ?? 0;
 
   return {
     products: products.count ?? 0,

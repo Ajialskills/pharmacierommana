@@ -69,7 +69,7 @@ export default async function CommandeDetailPage({ params }: Props) {
           </div>
           <div className="flex justify-between font-bold text-[var(--color-on-surface)] text-base pt-1">
             <span>Total</span>
-            <span className="text-[var(--color-primary)]">{Number(order.total_amount).toFixed(2)} د.م.</span>
+            <span className="text-[var(--color-primary)]">{Number(order.total).toFixed(2)} د.م.</span>
           </div>
         </div>
       </section>

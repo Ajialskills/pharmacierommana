@@ -70,10 +70,9 @@ export async function createOrder(input: CreateOrderInput): Promise<{ id: string
       customer_email: input.customer_email,
       customer_phone: input.customer_phone,
       shipping_address,
-      shipping_city: input.shipping_city,
       subtotal,
       shipping_cost,
-      total_amount,
+      total: total_amount,
       notes,
     })
     .select("id, order_number")
@@ -149,7 +148,7 @@ export interface UserOrder {
   order_number: string;
   status: string;
   payment_method: string;
-  total_amount: number;
+  total: number;
   created_at: string;
 }
 
@@ -161,7 +160,7 @@ export async function getUserOrders(): Promise<UserOrder[]> {
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("orders")
-    .select("id, order_number, status, payment_method, total_amount, created_at")
+    .select("id, order_number, status, payment_method, total, created_at")
     .eq("customer_email", user.email)
     .order("created_at", { ascending: false });
   if (error) throw new Error(error.message);

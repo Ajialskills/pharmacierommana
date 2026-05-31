@@ -58,7 +58,7 @@ export default async function AdminCommandesPage() {
                   <p className="font-semibold text-[var(--color-on-surface)]">{order.customer_name}</p>
                   <p className="text-xs text-[var(--color-on-surface-variant)]">{order.shipping_city}</p>
                 </td>
-                <td className="px-6 py-4 font-bold text-[var(--color-primary)]">{Number(order.total_amount).toFixed(2)} د.م.</td>
+                <td className="px-6 py-4 font-bold text-[var(--color-primary)]">{Number(order.total).toFixed(2)} د.م.</td>
                 <td className="px-6 py-4">
                   <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${STATUS_COLORS[order.status] ?? "bg-gray-100 text-gray-700"}`}>
                     {STATUS_LABELS[order.status] ?? order.status}

@@ -189,7 +189,7 @@ function OrderRow({ order }: { order: UserOrder }) {
       </div>
       <div className="flex items-center gap-3">
         <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-semibold ${colorCls}`}>{label}</span>
-        <p className="font-bold text-[var(--color-on-surface)] text-sm whitespace-nowrap">{order.total_amount.toFixed(2)} DH</p>
+        <p className="font-bold text-[var(--color-on-surface)] text-sm whitespace-nowrap">{order.total.toFixed(2)} DH</p>
       </div>
     </div>
   );
