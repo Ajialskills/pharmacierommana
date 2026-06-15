@@ -4,11 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { useCart } from "./CartContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const FOCUSABLE = 'a[href],button:not([disabled]),input,select,textarea,[tabindex]:not([tabindex="-1"])';
 
 export default function CartDrawer() {
   const { items, remove, update, total, count, isOpen, closeCart } = useCart();
+  const { tr } = useLanguage();
   const drawerRef = useRef<HTMLElement>(null);
   const lastFocusRef = useRef<Element | null>(null);
 
@@ -51,17 +53,17 @@ export default function CartDrawer() {
         ref={drawerRef}
         role="dialog"
         aria-modal="true"
-        aria-label="Panier"
+        aria-label={tr("cart.title")}
         className="fixed right-0 top-0 h-full w-full max-w-[384px] bg-white z-[120] flex flex-col shadow-2xl"
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-[var(--color-border-subtle)]">
           <h2 className="font-bold text-[var(--color-on-surface)]">
-            Panier <span className="text-[var(--color-primary)]">({count})</span>
+            {tr("cart.title")} <span className="text-[var(--color-primary)]">({count})</span>
           </h2>
           <button
             onClick={closeCart}
-            aria-label="Fermer le panier"
+            aria-label={tr("cart.close")}
             className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[var(--color-background-soft)] transition-colors text-[var(--color-on-surface-variant)]"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
@@ -73,7 +75,7 @@ export default function CartDrawer() {
           {items.length === 0 && (
             <div className="text-center text-[var(--color-on-surface-variant)] text-sm py-16">
               <svg className="mx-auto mb-4 opacity-30" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-              <p>Votre panier est vide</p>
+              <p>{tr("cart.empty")}</p>
             </div>
           )}
           {items.map((item) => {
@@ -106,7 +108,7 @@ export default function CartDrawer() {
                     <button
                       onClick={() => remove(item.product.id)}
                       className="ml-auto text-xs text-[var(--color-error)] hover:underline"
-                    >Retirer</button>
+                    >{tr("cart.remove")}</button>
                   </div>
                 </div>
               </div>
@@ -118,7 +120,7 @@ export default function CartDrawer() {
         {items.length > 0 && (
           <div className="border-t border-[var(--color-border-subtle)] px-6 py-5 space-y-4">
             <div className="flex justify-between text-sm font-bold text-[var(--color-on-surface)]">
-              <span>Total</span>
+              <span>{tr("cart.total")}</span>
               <span className="text-[var(--color-primary)]">{total.toFixed(2)} د.م.</span>
             </div>
             <Link
@@ -126,14 +128,14 @@ export default function CartDrawer() {
               onClick={closeCart}
               className="block w-full bg-[var(--color-primary)] text-white text-center py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition-opacity"
             >
-              Commander
+              {tr("general.order")}
             </Link>
             <Link
               href="/panier"
               onClick={closeCart}
               className="block w-full text-center py-3 rounded-xl font-semibold text-sm border border-[var(--color-border-subtle)] hover:bg-[var(--color-background-soft)] transition-colors text-[var(--color-on-surface)]"
             >
-              Voir le panier
+              {tr("general.view_cart")}
             </Link>
           </div>
         )}

@@ -110,6 +110,7 @@ export interface Testimonial {
   id: string;
   author_name: string;
   author_initials: string;
+  avatar_url: string | null;
   body: string;
   rating: number;
   time_ago: string;

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/components/cart/CartContext";
 import { useWishlist } from "@/components/wishlist/WishlistContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import type { Product } from "@/types";
 
 interface ProductCardProps {
@@ -16,6 +17,7 @@ interface ProductCardProps {
 export default function ProductCard({ product, showBadge = true, className = "", priority = false }: ProductCardProps) {
   const { add } = useCart();
   const { toggle, has } = useWishlist();
+  const { tr } = useLanguage();
   const inWishlist = has(product.id);
 
   const discount =
@@ -26,11 +28,11 @@ export default function ProductCard({ product, showBadge = true, className = "",
   const displayPrice = product.sale_price ?? product.price;
 
   return (
-    <article className={`bg-white rounded-xl border border-[var(--color-border-subtle)] p-2 group transition-all hover:shadow-xl card-shadow flex flex-col ${className}`}>
+    <article className={`bg-white rounded-xl border border-[var(--color-border-subtle)] p-2 group transition-all duration-300 hover:shadow-xl hover:-translate-y-1 card-shadow flex flex-col ${className}`}>
       {/* Clickable area: image + name + price */}
       <Link href={`/produit/${product.slug}`} className="flex flex-col flex-1 min-w-0">
         {/* Image */}
-        <div className="relative mb-2 aspect-square overflow-hidden rounded-lg bg-[var(--color-background-soft)]">
+        <div className="relative mb-2 aspect-[3/4] overflow-hidden rounded-lg bg-[var(--color-background-soft)]">
           {showBadge && discount && (
             <span
               className="absolute top-2 left-2 z-10 text-white font-bold px-2 py-1 rounded text-[10px] uppercase tracking-wide"
@@ -46,12 +48,12 @@ export default function ProductCard({ product, showBadge = true, className = "",
               alt={product.name}
               fill
               priority={priority}
-              className="object-contain p-4 group-hover:scale-110 transition-transform duration-500"
+              className="object-contain p-4 group-hover:scale-[1.07] transition-transform duration-500 ease-out"
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-[var(--color-outline)] text-xs">
-              Image à venir
+              {tr("product.image_coming")}
             </div>
           )}
         </div>
@@ -83,11 +85,11 @@ export default function ProductCard({ product, showBadge = true, className = "",
             <line x1="3" y1="6" x2="21" y2="6" />
             <path d="M16 10a4 4 0 0 1-8 0" />
           </svg>
-          Panier
+          {tr("product.add_to_cart")}
         </button>
         <button
           onClick={() => toggle(product)}
-          aria-label={inWishlist ? "Retirer des favoris" : "Ajouter aux favoris"}
+          aria-label={inWishlist ? tr("product.remove_wishlist") : tr("product.add_wishlist")}
           className="w-8 h-8 flex items-center justify-center rounded-md border border-[var(--color-border-subtle)] hover:bg-[var(--color-background-soft)] transition-colors shrink-0"
           style={{ color: inWishlist ? "var(--color-tertiary-container)" : "var(--color-on-surface-variant)" }}
         >

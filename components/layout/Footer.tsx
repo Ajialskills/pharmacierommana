@@ -1,16 +1,20 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const LINKS_UTILES = [
-  { label: "Boutique", href: "/boutique" },
-  { label: "Blog Santé", href: "/blog" },
-  { label: "Livraison", href: "/livraison" },
-  { label: "Retours", href: "/retours" },
-  { label: "FAQ", href: "/faq" },
-  { label: "Contact", href: "/contact" },
+  { labelKey: "nav.boutique" as const, href: "/boutique" },
+  { labelKey: "nav.blog" as const, href: "/blog" },
+  { labelKey: "nav.livraison" as const, href: "/livraison" },
+  { labelKey: "nav.retours" as const, href: "/retours" },
+  { labelKey: "nav.faq" as const, href: "/faq" },
+  { labelKey: "nav.contact" as const, href: "/contact" },
 ];
 
 export default function Footer() {
+  const { tr } = useLanguage();
   return (
     <footer className="bg-white border-t border-[var(--color-border-subtle)]">
       <div
@@ -28,16 +32,14 @@ export default function Footer() {
               className="h-12 w-auto object-contain"
             />
             <p className="text-[var(--color-on-surface-variant)] text-sm leading-relaxed pr-4">
-              Pharmacie Rommana, basée à Tétouan, est une parapharmacie en ligne
-              spécialisée dans les produits de soin, d&apos;hygiène et de bien-être.
-              Livraison rapide partout au Maroc.
+              {tr("footer.description")}
             </p>
           </div>
 
           {/* Liens utiles */}
           <div>
             <h4 className="font-semibold text-[var(--color-on-surface)] mb-6 text-base">
-              Liens Utiles
+              {tr("footer.useful_links")}
             </h4>
             <ul className="space-y-4">
               {LINKS_UTILES.map((item) => (
@@ -46,7 +48,7 @@ export default function Footer() {
                     href={item.href}
                     className="text-[var(--color-on-surface-variant)] hover:text-[var(--color-primary)] transition-colors text-sm"
                   >
-                    {item.label}
+                    {tr(item.labelKey)}
                   </Link>
                 </li>
               ))}
@@ -56,7 +58,7 @@ export default function Footer() {
           {/* Contact */}
           <div>
             <h4 className="font-semibold text-[var(--color-on-surface)] mb-6 text-base">
-              Contact
+              {tr("footer.contact")}
             </h4>
             <ul className="space-y-4">
               <li className="flex gap-3 text-sm text-[var(--color-on-surface-variant)]">
@@ -65,7 +67,7 @@ export default function Footer() {
               </li>
               <li className="flex gap-3 text-sm text-[var(--color-on-surface-variant)]">
                 <PhoneIcon />
-                <a href="tel:0539714272" className="hover:text-[var(--color-primary)] transition-colors">
+                <a href="tel:0539714272" dir="ltr" className="hover:text-[var(--color-primary)] transition-colors">
                   05 39 71 42 72
                 </a>
               </li>
@@ -77,7 +79,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="hover:text-[var(--color-primary)] transition-colors"
                 >
-                  0641 33 74 43 (WhatsApp)
+                  <span dir="ltr">0641 33 74 43</span> (WhatsApp)
                 </a>
               </li>
             </ul>
@@ -86,14 +88,14 @@ export default function Footer() {
           {/* Map placeholder — spans 2 cols */}
           <div className="lg:col-span-2">
             <h4 className="font-semibold text-[var(--color-on-surface)] mb-6 text-base">
-              Nous trouver
+              {tr("general.find_us")}
             </h4>
             <address className="not-italic space-y-1.5 text-sm text-[var(--color-on-surface-variant)]">
               <p className="font-semibold text-[var(--color-on-surface)]">Pharmacie Rommana</p>
               <p>344 Av Al Hijra, Tétouan</p>
               <p>
                 Tél&nbsp;:{" "}
-                <a href="tel:0539714272" className="hover:text-[var(--color-primary)] transition-colors">
+                <a href="tel:0539714272" dir="ltr" className="hover:text-[var(--color-primary)] transition-colors">
                   05 39 71 42 72
                 </a>
               </p>
@@ -104,13 +106,13 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-[var(--color-border-subtle)] py-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-[var(--color-on-surface-variant)]">
-            © 2026 Pharmacie Rommana. Tous droits réservés.
+            © 2026 Pharmacie Rommana. {tr("footer.rights")}.
           </p>
           <div className="flex gap-6 text-xs text-[var(--color-on-surface-variant)]">
-            <Link href="/cgv" className="hover:text-[var(--color-primary)] transition-colors">CGV</Link>
-            <Link href="/mentions-legales" className="hover:text-[var(--color-primary)] transition-colors">Mentions légales</Link>
-            <Link href="/livraison" className="hover:text-[var(--color-primary)] transition-colors">Livraison</Link>
-            <Link href="/retours" className="hover:text-[var(--color-primary)] transition-colors">Retours</Link>
+            <Link href="/cgv" className="hover:text-[var(--color-primary)] transition-colors">{tr("nav.cgv")}</Link>
+            <Link href="/mentions-legales" className="hover:text-[var(--color-primary)] transition-colors">{tr("nav.legal")}</Link>
+            <Link href="/livraison" className="hover:text-[var(--color-primary)] transition-colors">{tr("nav.livraison")}</Link>
+            <Link href="/retours" className="hover:text-[var(--color-primary)] transition-colors">{tr("nav.retours")}</Link>
           </div>
         </div>
       </div>

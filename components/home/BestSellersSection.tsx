@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import ProductCard from "@/components/product/ProductCard";
+import { useLanguage } from "@/contexts/LanguageContext";
 import type { Product } from "@/types";
 
 interface Props {
@@ -15,6 +16,7 @@ export default function BestSellersSection({ products, filterCategories }: Props
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
 
+  const { tr, trCat } = useLanguage();
   if (products.length === 0) return null;
 
   const filtered = useMemo(() => {
@@ -50,7 +52,7 @@ export default function BestSellersSection({ products, filterCategories }: Props
             }}
             className="inline-block text-[#035F63] font-black px-8 py-3 rounded-full"
           >
-            RECHERCHE RAPIDE
+            {tr("boutique.quick_search")}
           </h2>
         </div>
 
@@ -64,7 +66,7 @@ export default function BestSellersSection({ products, filterCategories }: Props
             </svg>
             <input
               type="search"
-              placeholder="Rechercher..."
+              placeholder={tr("boutique.search_placeholder")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-[var(--color-border-subtle)] bg-[var(--color-surface-container-low)] text-[var(--color-on-surface)] placeholder:text-[var(--color-on-surface-variant)] focus:outline-none focus:border-[var(--color-primary)] transition-colors"
@@ -83,7 +85,7 @@ export default function BestSellersSection({ products, filterCategories }: Props
                   : "bg-transparent text-[var(--color-on-surface-variant)] border-[var(--color-border-subtle)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
               }`}
             >
-              Tous
+              {tr("boutique.all")}
             </button>
             {filterCategories.map((cat) => (
               <button
@@ -95,7 +97,7 @@ export default function BestSellersSection({ products, filterCategories }: Props
                     : "bg-transparent text-[var(--color-on-surface-variant)] border-[var(--color-border-subtle)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
                 }`}
               >
-                {cat.name}
+                {trCat(cat.name, cat.id)}
               </button>
             ))}
           </div>

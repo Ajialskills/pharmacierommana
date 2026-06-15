@@ -10,10 +10,11 @@ export const metadata: Metadata = {
   },
 };
 import HeroSection from "@/components/home/HeroSection";
+import { PromoMarquee, PromoSectionHeading, PromoBleedLabel } from "@/components/home/PromoHeading";
 import FeaturesStrip from "@/components/home/FeaturesStrip";
 import CategoriesSection from "@/components/home/CategoriesSection";
 import BestSellersSection from "@/components/home/BestSellersSection";
-import BrandsWall from "@/components/home/BrandsWall";
+import BrandStrip from "@/components/home/BrandStrip";
 import QuickActionsGrid from "@/components/pharmacy/QuickActionsGrid";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
 import CarnetSection from "@/components/home/CarnetSection";
@@ -117,38 +118,11 @@ export default async function HomePage() {
       {/* Offres Spéciales */}
       {promoProducts.length > 0 && (
         <>
-          {/* Marquee strip */}
-          <div className="overflow-hidden bg-[#035F63] py-2.5 select-none">
-            <div className="flex whitespace-nowrap animate-marquee">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <span key={i} className="inline-flex items-center gap-6 px-10 text-white text-sm font-semibold tracking-wide">
-                  Profitez de nos offres spéciales
-                  <span className="opacity-60">✦</span>
-                  Réductions allant jusqu&apos;à 30&nbsp;%
-                  <span className="opacity-60">✦</span>
-                </span>
-              ))}
-            </div>
-          </div>
+          <PromoMarquee />
 
           <section aria-labelledby="promos-heading" className="pt-10 pb-6" id="promotions">
-            {/* Heading — padded */}
-            <div
-              style={{ maxWidth: "var(--spacing-max-width)" }}
-              className="mx-auto px-[var(--spacing-lg)]"
-            >
-              <div className="flex flex-col items-center text-center mb-12">
-                <h2
-                  id="promos-heading"
-                  style={{ fontSize: "var(--text-headline-lg)", fontWeight: "var(--text-headline-lg--font-weight)" }}
-                  className="text-[var(--color-on-background)]"
-                >
-                  Offres Spéciales
-                </h2>
-                <p className="text-[var(--color-on-surface-variant)] text-sm mt-1">
-                  Profitez de nos réductions exclusives du moment
-                </p>
-              </div>
+            <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)]">
+              <PromoSectionHeading />
             </div>
 
             {/* Grid — left image bleeds to viewport edge, right column respects container */}
@@ -161,10 +135,7 @@ export default async function HomePage() {
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                  <div className="absolute bottom-6 left-6 text-white">
-                    <span className="text-xs font-semibold uppercase tracking-widest opacity-80">Promotions</span>
-                    <p className="text-2xl font-bold mt-1">Jusqu&apos;à −30&nbsp;%</p>
-                  </div>
+                  <PromoBleedLabel />
                 </div>
 
                 {/* Right — 2×2 grid, padded to align with rest of page */}
@@ -182,7 +153,7 @@ export default async function HomePage() {
         </>
       )}
 
-      <BrandsWall brands={featuredBrands} />
+      <BrandStrip brands={featuredBrands} />
       <CarnetSection articles={recentArticles} />
       <TestimonialsSection testimonials={testimonials} />
       <NewsletterBand />

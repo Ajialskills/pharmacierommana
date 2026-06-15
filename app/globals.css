@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+/* Arabic layout — applied when HtmlLang sets dir=rtl */
+[dir="rtl"] {
+  font-family: var(--font-arabic), system-ui, sans-serif;
+}
+[dir="rtl"] input,
+[dir="rtl"] button,
+[dir="rtl"] textarea {
+  font-family: var(--font-arabic), system-ui, sans-serif;
+  text-align: right;
+}
+
 @theme inline {
   /* ── Colors ── */
   --color-primary: #00696e;
