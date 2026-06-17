@@ -3,9 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-function setCookieAndGo(lang: "fr" | "ar", router: ReturnType<typeof useRouter>) {
+function setCookieAndGo(lang: "fr" | "ar") {
   document.cookie = `pr_lang=${lang}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
-  router.push("/accueil");
+  // Hard navigation to bypass Next.js router cache — ensures the server re-reads the fresh cookie
+  window.location.href = "/accueil";
 }
 
 export default function LanguagePicker() {
@@ -50,7 +51,7 @@ export default function LanguagePicker() {
       <div className="flex flex-col sm:flex-row gap-6 justify-center">
         {/* French */}
         <button
-          onClick={() => setCookieAndGo("fr", router)}
+          onClick={() => setCookieAndGo("fr")}
           className="group w-80 flex flex-col items-center gap-7 bg-white border-2 border-transparent hover:border-[#00696e] rounded-3xl px-12 py-16 shadow-sm hover:shadow-xl transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00696e] cursor-pointer"
         >
           <span className="text-7xl" role="img" aria-label="Drapeau français">🇫🇷</span>
@@ -68,7 +69,7 @@ export default function LanguagePicker() {
 
         {/* Arabic */}
         <button
-          onClick={() => setCookieAndGo("ar", router)}
+          onClick={() => setCookieAndGo("ar")}
           className="group w-80 flex flex-col items-center gap-7 bg-white border-2 border-transparent hover:border-[#00696e] rounded-3xl px-12 py-16 shadow-sm hover:shadow-xl transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00696e] cursor-pointer"
         >
           <span className="text-7xl" role="img" aria-label="العلم المغربي">🇲🇦</span>

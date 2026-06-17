@@ -36,7 +36,7 @@ export default function BrandStrip({ brands }: Props) {
               key={`${brand.id}-${i}`}
               href={`/marques/${brand.slug}`}
               tabIndex={i < brands.length ? 0 : -1}
-              className="flex items-center justify-center h-16 w-40 shrink-0 px-4 py-2 rounded-xl border border-[var(--color-border-subtle)] bg-white hover:border-[var(--color-primary)] hover:shadow-sm transition-all grayscale hover:grayscale-0 group"
+              className="flex items-center justify-center h-16 w-40 shrink-0 px-4 py-2 rounded-xl border border-[var(--color-border-subtle)] bg-white hover:border-[var(--color-primary)] hover:shadow-sm transition-all group"
             >
               {brand.logo_url ? (
                 <Image

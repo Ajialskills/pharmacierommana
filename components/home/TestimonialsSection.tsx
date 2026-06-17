@@ -37,27 +37,20 @@ export default function TestimonialsSection({ testimonials }: TestimonialsSectio
   if (!testimonials.length) return null;
 
   return (
-    <section aria-labelledby="testimonials-heading" className="py-16 bg-[var(--color-background-soft)]">
+    <section aria-labelledby="testimonials-heading" className="pt-10 pb-16 bg-[var(--color-background-soft)]">
       <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)]">
-        <div className="flex flex-col items-center text-center mb-12">
-          <div className="flex items-center gap-2 mb-3">
+        <div className="flex flex-col items-start mb-8">
+          <div className="flex items-center gap-2 mb-2">
             <GoogleG />
             <span className="text-sm font-semibold text-[var(--color-on-surface-variant)]">{tr("home.reviews_badge")}</span>
           </div>
           <h2
             id="testimonials-heading"
             style={{ fontSize: "var(--text-headline-lg)", fontWeight: "var(--text-headline-lg--font-weight)" }}
-            className="text-[var(--color-on-background)]"
+            className="text-[var(--color-on-background)] text-center w-full"
           >
             {tr("home.reviews")}
           </h2>
-          <div className="flex items-center gap-2 mt-3">
-            <span className="text-3xl font-bold text-[var(--color-on-background)]">5.0</span>
-            <div className="flex flex-col items-start gap-0.5">
-              <StarRating rating={5} />
-              <span className="text-xs text-[var(--color-on-surface-variant)]">{testimonials.length} {tr("home.reviews_count")}</span>
-            </div>
-          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
