@@ -7,19 +7,19 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const SLIDES = [
   {
-    // Modern pharmacy interior — wide aisle, bright shelves, clean retail
-    src: "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=1920&h=900&q=80&auto=format&fit=crop&crop=center",
-    alt: "Intérieur moderne d'une parapharmacie",
+    // Spa facial treatment room — person receiving skincare, wide scene, no product labels
+    src: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=1920&h=900&q=80&auto=format&fit=crop&crop=center",
+    alt: "Soin visage et traitement crème",
   },
   {
-    // Colourful beauty & cosmetics retail display — wide shot, vibrant products
-    src: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=1920&h=900&q=80&auto=format&fit=crop&crop=center",
-    alt: "Rayons de produits de beauté colorés",
+    // Wide pharmacy counter & dispensary — warm lighting, professional
+    src: "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=1920&h=900&q=80&auto=format&fit=crop&crop=center",
+    alt: "Comptoir pharmacie professionnel",
   },
   {
-    // Bright health & skincare products on shelves — wide, organised retail
-    src: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1920&h=900&q=80&auto=format&fit=crop&crop=center",
-    alt: "Produits de soin et de beauté en rayons",
+    // Colourful cosmetics & health products wall display — wide retail shot
+    src: "https://images.unsplash.com/photo-1583947581924-860bda6a26df?w=1920&h=900&q=80&auto=format&fit=crop&crop=center",
+    alt: "Mur de produits cosmétiques colorés",
   },
   {
     // Clean modern pharmacy shelf display — wide angle, colourful packaging

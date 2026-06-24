@@ -6,8 +6,8 @@ import { t, translateCategory, type Lang, type TranslationKey } from "@/lib/tran
 interface LanguageContextValue {
   lang: Lang;
   setLang: (lang: Lang) => void;
-  /** Translate a UI string by key */
-  tr: (key: TranslationKey) => string;
+  /** Translate a UI string by key, with optional variable interpolation */
+  tr: (key: TranslationKey, vars?: Record<string, string | number>) => string;
   /** Translate a category name by its slug (falls back to French name) */
   trCat: (name: string, slug: string) => string;
 }
@@ -15,7 +15,7 @@ interface LanguageContextValue {
 const LanguageContext = createContext<LanguageContextValue>({
   lang: "fr",
   setLang: () => {},
-  tr: (key) => t(key, "fr"),
+  tr: (key, vars) => t(key, "fr", vars),
   trCat: (name) => name,
 });
 
@@ -37,7 +37,7 @@ export function LanguageProvider({ children, initialLang }: { children: React.Re
   const value: LanguageContextValue = {
     lang,
     setLang,
-    tr: (key) => t(key, lang),
+    tr: (key, vars) => t(key, lang, vars),
     trCat: (name, slug) => translateCategory(name, slug, lang),
   };
 

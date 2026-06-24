@@ -31,6 +31,9 @@ const translations = {
   "cat.maman": { fr: "Maman", ar: "الأم" },
   "cat.sante-bebe": { fr: "Santé bébé", ar: "صحة الطفل" },
 
+  "cat.capillaire": { fr: "Capillaire", ar: "العناية بالشعر" },
+  "cat.complements-alimentaires": { fr: "Compléments alimentaires", ar: "المكملات الغذائية" },
+
   // ─── Subcategories — Cheveux ──────────────────────────────
   "cat.bio": { fr: "Bio", ar: "طبيعي" },
   "cat.shampoing": { fr: "Shampoing", ar: "الشامبو" },
@@ -84,6 +87,10 @@ const translations = {
   "features.payment_title": { fr: "Paiement à la Livraison", ar: "الدفع عند الاستلام" },
   "features.payment_badge": { fr: "100% Sécurisé", ar: "100% آمن" },
   "features.payment_sub": { fr: "Payez à la réception", ar: "ادفع عند التسليم" },
+  "features.delivery_long": { fr: "Dès {tetouan} DH sur Tétouan · {maroc} DH sur tout le Maroc", ar: "ابتداءً من {tetouan} درهم على تطوان · {maroc} درهم على كل المغرب" },
+  "features.payment_long": { fr: "Commandez en toute confiance et payez cash directement lors de la réception de votre colis.", ar: "اطلب بثقة وادفع نقداً عند استلام طردك مباشرةً." },
+  "features.whatsapp_title": { fr: "Commande WhatsApp", ar: "طلب عبر واتساب" },
+  "features.whatsapp_sub": { fr: "Besoin d'un conseil ou envie de commander rapidement ? Échangez avec nous !", ar: "تحتاج نصيحة أو تريد طلباً سريعاً؟ تواصل معنا!" },
 
   // ─── Product card ─────────────────────────────────────────
   "product.add_to_cart": { fr: "Panier", ar: "السلة" },
@@ -102,6 +109,7 @@ const translations = {
   "cart.total": { fr: "Total", ar: "المجموع" },
   "cart.checkout": { fr: "Commander", ar: "إتمام الطلب" },
   "cart.free_delivery": { fr: "Livraison offerte dès 400 DH", ar: "توصيل مجاني ابتداءً من 400 درهم" },
+  "cart.free_delivery_left": { fr: "Plus que {amount} DH pour la livraison gratuite", ar: "تبقى {amount} درهم للحصول على توصيل مجاني" },
 
   // ─── Homepage sections ────────────────────────────────────
   "home.bestsellers": { fr: "Meilleures Ventes", ar: "الأكثر مبيعاً" },
@@ -121,6 +129,12 @@ const translations = {
   "home.promotions_marquee_b": { fr: "Réductions allant jusqu'à 30 %", ar: "خصومات تصل إلى 30 %" },
 
   // ─── Footer ───────────────────────────────────────────────
+  "footer.address": { fr: "Adresse", ar: "العنوان" },
+  "footer.whatsapp": { fr: "WhatsApp", ar: "واتساب" },
+  "footer.phone": { fr: "Téléphone", ar: "الهاتف" },
+  "footer.socials": { fr: "Réseaux sociaux", ar: "التواصل الاجتماعي" },
+  "footer.copyright": { fr: "© 2026 Pharmacie Rommana. Tous droits réservés.", ar: "© 2026 صيدلية الرمانة. جميع الحقوق محفوظة." },
+  "nav.about": { fr: "À Propos", ar: "من نحن" },
   "footer.description": {
     fr: "Pharmacie Rommana, basée à Tétouan, est une parapharmacie en ligne spécialisée dans les produits de soin, d'hygiène et de bien-être. Livraison rapide partout au Maroc.",
     ar: "صيدلية الرمانة، مقرها تطوان، صيدلية بارامديكالية متخصصة في منتجات العناية والنظافة والعافية. توصيل سريع في جميع أنحاء المغرب.",
@@ -151,6 +165,13 @@ const translations = {
   "order.delivery": { fr: "Livraison", ar: "التوصيل" },
   "order.free": { fr: "Gratuite", ar: "مجاني" },
   "order.total": { fr: "Total", ar: "المجموع" },
+  "order.success_title": { fr: "Commande confirmée !", ar: "تم تأكيد طلبك!" },
+  "order.success_sub": { fr: "Merci pour votre commande", ar: "شكراً لك على طلبك" },
+  "order.number": { fr: "Numéro de commande", ar: "رقم الطلب" },
+  "order.fail_title": { fr: "Paiement échoué", ar: "فشل الدفع" },
+  "order.fail_sub": { fr: "Votre paiement n'a pas pu être traité.", ar: "لم نتمكن من معالجة دفعتك." },
+  "order.retry": { fr: "Réessayer", ar: "حاول مجدداً" },
+  "order.back_cart": { fr: "Retour au panier", ar: "العودة إلى السلة" },
 
   // ─── General ──────────────────────────────────────────────
   "general.see_more": { fr: "Voir plus", ar: "عرض المزيد" },
@@ -169,6 +190,13 @@ const translations = {
   "boutique.min_price": { fr: "Prix min", ar: "أقل سعر" },
   "boutique.max_price": { fr: "Prix max", ar: "أعلى سعر" },
   "boutique.sort": { fr: "Trier par", ar: "ترتيب حسب" },
+  "boutique.sort_by": { fr: "Trier par", ar: "ترتيب حسب" },
+  "boutique.sort_price_asc": { fr: "Prix croissant", ar: "السعر: من الأقل" },
+  "boutique.sort_price_desc": { fr: "Prix décroissant", ar: "السعر: من الأعلى" },
+  "boutique.sort_newest": { fr: "Nouveautés", ar: "الأحدث" },
+  "boutique.reset_filters": { fr: "Réinitialiser", ar: "إعادة تعيين" },
+  "boutique.on_sale": { fr: "En promotion", ar: "الأصناف المخفضة" },
+  "boutique.in_stock": { fr: "En stock", ar: "متوفر في المخزن" },
   "boutique.filters": { fr: "Filtres", ar: "تصفية" },
   "boutique.results": { fr: "résultats", ar: "نتيجة" },
   "boutique.no_results": { fr: "Aucun produit trouvé", ar: "لا توجد منتجات" },
@@ -180,10 +208,15 @@ const translations = {
   "home.blog_read": { fr: "Lire l'article", ar: "قراءة المقال" },
 
   // ─── Pharmacy specific ────────────────────────────────────
-  "pharmacy.garde_title": { fr: "Pharmacie de Garde", ar: "صيدلية الحراسة" },
-  "pharmacy.garde_sub": { fr: "Téléchargez le planning de la semaine", ar: "تنزيل جدول الأسبوع" },
+  "pharmacy.garde_title": { fr: "Pharmacie de Garde", ar: "صيدلية المناوبة" },
+  "pharmacy.garde_sub": { fr: "Tétouan · semaine en cours", ar: "تطوان · الأسبوع الحالي" },
+  "pharmacy.garde_pdf": { fr: "Télécharger le PDF", ar: "تحميل PDF" },
   "pharmacy.garde_download": { fr: "Télécharger le PDF", ar: "تحميل ملف PDF" },
   "pharmacy.garde_none": { fr: "Aucun planning disponible", ar: "لا يوجد جدول متاح" },
+  "pharmacy.garde_popup": { fr: "PDF disponible", ar: "PDF متاح" },
+  "pharmacy.whatsapp_title": { fr: "Consultation WhatsApp", ar: "استشارة على واتساب" },
+  "pharmacy.whatsapp_sub": { fr: "Posez vos questions à notre pharmacien", ar: "اسأل صيدلانيَّنا مباشرةً" },
+  "pharmacy.whatsapp_cta": { fr: "Consulter maintenant", ar: "استشر الآن" },
   "pharmacy.consult_title": { fr: "Votre Consultation", ar: "استشارتك" },
   "pharmacy.consult_sub": { fr: "Posez vos questions à notre pharmacien", ar: "اسأل صيدلانينا مباشرة" },
   "pharmacy.consult_cta": { fr: "Démarrer sur WhatsApp", ar: "ابدأ على واتساب" },
@@ -201,17 +234,45 @@ const translations = {
   // ─── Account / auth ───────────────────────────────────────
   "auth.login": { fr: "Connexion", ar: "تسجيل الدخول" },
   "auth.register": { fr: "Inscription", ar: "إنشاء حساب" },
-  "auth.logout": { fr: "Déconnexion", ar: "تسجيل الخروج" },
+  "auth.logout": { fr: "Se déconnecter", ar: "تسجيل الخروج" },
   "auth.my_account": { fr: "Mon Compte", ar: "حسابي" },
   "auth.my_orders": { fr: "Mes commandes", ar: "طلباتي" },
   "auth.my_addresses": { fr: "Mes adresses", ar: "عناويني" },
   "auth.my_wishlist": { fr: "Ma liste de souhaits", ar: "قائمة أمنياتي" },
+  "account.title": { fr: "Mon Compte", ar: "حسابي" },
+  "account.tab_overview": { fr: "Aperçu", ar: "نظرة عامة" },
+  "account.tab_orders": { fr: "Commandes", ar: "الطلبات" },
+  "account.tab_profile": { fr: "Profil", ar: "الملف الشخصي" },
+  "account.tab_addresses": { fr: "Adresses", ar: "العناوين" },
+  "account.tab_security": { fr: "Sécurité", ar: "الأمان" },
+  "account.no_orders": { fr: "Aucune commande pour l'instant", ar: "لا توجد طلبات حتى الآن" },
+  "account.edit": { fr: "Modifier", ar: "تعديل" },
+  "account.save": { fr: "Enregistrer", ar: "حفظ" },
+  "auth.email": { fr: "Adresse e-mail", ar: "البريد الإلكتروني" },
+  "auth.password": { fr: "Mot de passe", ar: "كلمة المرور" },
+  "auth.forgot_password": { fr: "Mot de passe oublié ?", ar: "هل نسيت كلمة المرور؟" },
+  "auth.no_account": { fr: "Pas encore de compte ?", ar: "ليس لديك حساب؟" },
+  "auth.sign_in": { fr: "Se connecter", ar: "تسجيل الدخول" },
+  "auth.create_account": { fr: "Créer un compte", ar: "إنشاء حساب" },
+  "auth.full_name": { fr: "Prénom & nom", ar: "الاسم الكامل" },
+  "auth.confirm_password": { fr: "Confirmer le mot de passe", ar: "تأكيد كلمة المرور" },
+  "auth.have_account": { fr: "Déjà un compte ?", ar: "لديك حساب بالفعل؟" },
+
+  // ─── Wishlist page ────────────────────────────────────────────
+  "wishlist.empty": { fr: "Votre liste de favoris est vide", ar: "قائمة المفضلة فارغة" },
+  "wishlist.discover": { fr: "Découvrir nos produits", ar: "اكتشاف منتجاتنا" },
 } as const;
 
 export type TranslationKey = keyof typeof translations;
 
-export function t(key: TranslationKey, lang: Lang): string {
-  return translations[key][lang];
+export function t(key: TranslationKey, lang: Lang, vars?: Record<string, string | number>): string {
+  let str: string = translations[key][lang];
+  if (vars) {
+    for (const [k, v] of Object.entries(vars)) {
+      str = str.replace(new RegExp(`\\{${k}\\}`, "g"), String(v));
+    }
+  }
+  return str;
 }
 
 /** Map a category slug to a translated name */
@@ -247,6 +308,8 @@ const SLUG_TO_KEY: Record<string, TranslationKey> = {
   "texture": "cat.texture",
   "types-de-peau": "cat.types-peau",
   "soin-visage": "cat.soin-visage",
+  "capillaire": "cat.capillaire",
+  "complements-alimentaires": "cat.complements-alimentaires",
 };
 
 export function translateCategory(name: string, slug: string, lang: Lang): string {

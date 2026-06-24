@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Article } from "@/types";
+import { getT } from "@/lib/server-translations";
 
 type ArticlePreview = Pick<Article, "id" | "slug" | "title" | "excerpt" | "cover_image" | "published_at">;
 
@@ -8,9 +9,10 @@ interface CarnetSectionProps {
   articles: ArticlePreview[];
 }
 
-export default function CarnetSection({ articles }: CarnetSectionProps) {
+export default async function CarnetSection({ articles }: CarnetSectionProps) {
   if (!articles.length) return null;
 
+  const t = await getT();
   const [featured, ...rest] = articles as ArticlePreview[];
 
   return (
@@ -22,21 +24,21 @@ export default function CarnetSection({ articles }: CarnetSectionProps) {
               style={{ fontSize: "var(--text-label-caps)", letterSpacing: "var(--text-label-caps--letter-spacing)" }}
               className="block text-[var(--color-primary)] font-semibold uppercase mb-2"
             >
-              Blog
+              {t("nav.blog")}
             </span>
             <h2
               id="carnet-heading"
               style={{ fontSize: "var(--text-headline-lg)", fontWeight: "var(--text-headline-lg--font-weight)" }}
               className="text-[var(--color-on-background)]"
             >
-              Conseils &amp; actualités santé
+              {t("home.blog_sub")}
             </h2>
           </div>
           <Link
             href="/blog"
             className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-primary)] hover:underline"
           >
-            Tous les articles
+            {t("home.blog_all")}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
@@ -160,7 +162,7 @@ export default function CarnetSection({ articles }: CarnetSectionProps) {
             href="/blog"
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-primary)] hover:underline"
           >
-            Tous les articles
+            {t("home.blog_all")}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>

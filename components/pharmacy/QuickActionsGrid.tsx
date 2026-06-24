@@ -1,6 +1,9 @@
 "use client";
 
+import { useLanguage } from "@/contexts/LanguageContext";
+
 export default function QuickActionsGrid() {
+  const { tr } = useLanguage();
   return (
     <section aria-label="Nos engagements" className="py-8 bg-[var(--color-surface-container-low)]">
       <div
@@ -24,9 +27,9 @@ export default function QuickActionsGrid() {
             </svg>
           </div>
           <div className="relative z-10">
-            <h3 className="text-2xl font-black text-white leading-tight mb-2">Livraison Gratuite</h3>
+            <h3 className="text-2xl font-black text-white leading-tight mb-2">{tr("features.delivery_title")}</h3>
             <p className="text-white/80 text-sm leading-relaxed">
-              Dès <span className="font-bold text-white">400 DH</span> sur Tétouan · <span className="font-bold text-white">800 DH</span> sur tout le Maroc
+              {tr("features.delivery_long", { tetouan: 400, maroc: 800 })}
             </p>
           </div>
         </div>
@@ -46,9 +49,9 @@ export default function QuickActionsGrid() {
             </svg>
           </div>
           <div className="relative z-10">
-            <h3 className="text-2xl font-black text-white leading-tight mb-2">Paiement à la Livraison</h3>
+            <h3 className="text-2xl font-black text-white leading-tight mb-2">{tr("features.payment_title")}</h3>
             <p className="text-white/80 text-sm leading-relaxed">
-              Commandez en toute confiance et payez cash directement lors de la réception de votre colis.
+              {tr("features.payment_long")}
             </p>
           </div>
         </div>
@@ -69,9 +72,9 @@ export default function QuickActionsGrid() {
             </svg>
           </div>
           <div className="relative z-10">
-            <h3 className="text-2xl font-black text-white leading-tight mb-2">Commande WhatsApp</h3>
+            <h3 className="text-2xl font-black text-white leading-tight mb-2">{tr("features.whatsapp_title")}</h3>
             <p className="text-white/80 text-sm leading-relaxed">
-              Besoin d&apos;un conseil ou envie de commander rapidement ? Échangez avec nous !
+              {tr("features.whatsapp_sub")}
             </p>
           </div>
         </a>

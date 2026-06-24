@@ -5,12 +5,14 @@ import { useRouter } from "next/navigation";
 import { useCart } from "@/components/cart/CartContext";
 import { createOrder } from "@/app/actions/order";
 import { computeShippingCost } from "@/lib/shipping";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const CITIES = ["Tétouan", "Martil", "Fnideq", "M'diq", "Chefchaouen", "Autre"];
 
 export default function CommandeClient() {
   const router = useRouter();
   const { items, total, clear } = useCart();
+  const { tr } = useLanguage();
   const [step, setStep] = useState<"address" | "payment" | "confirm">("address");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -89,7 +91,7 @@ export default function CommandeClient() {
 
         {/* Address */}
         <section className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-6 space-y-5">
-          <h2 className="font-bold text-[var(--color-on-surface)]">Coordonnées & livraison</h2>
+          <h2 className="font-bold text-[var(--color-on-surface)]">{tr("order.address")}</h2>
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
               <label className={labelCls}>Nom complet *</label>
@@ -122,11 +124,11 @@ export default function CommandeClient() {
 
         {/* Payment */}
         <section className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-6">
-          <h2 className="font-bold text-[var(--color-on-surface)] mb-3">Mode de paiement</h2>
+          <h2 className="font-bold text-[var(--color-on-surface)] mb-3">{tr("order.payment")}</h2>
           <div className="flex items-start gap-3 p-4 rounded-xl border-2 border-[var(--color-primary)] bg-[color-mix(in_srgb,var(--color-primary)_5%,transparent)]">
             <svg className="mt-0.5 flex-shrink-0" style={{ color: "var(--color-primary)" }} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
             <div>
-              <p className="font-semibold text-sm text-[var(--color-on-surface)]">Paiement à la livraison</p>
+              <p className="font-semibold text-sm text-[var(--color-on-surface)]">{tr("order.cod")}</p>
               <p className="text-xs text-[var(--color-on-surface-variant)] mt-0.5">Payez en cash directement lors de la réception de votre colis.</p>
             </div>
           </div>
@@ -137,14 +139,14 @@ export default function CommandeClient() {
           disabled={submitting || !addressComplete()}
           className="w-full bg-[var(--color-primary)] text-white py-4 rounded-xl font-bold text-sm hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {submitting ? "Traitement en cours…" : "Passer ma commande"}
+          {submitting ? "Traitement en cours…" : tr("order.submit")}
         </button>
       </div>
 
       {/* Right — order summary */}
       <div className="lg:col-span-2">
         <div className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-6 sticky top-28 space-y-4">
-          <h2 className="font-bold text-[var(--color-on-surface)]">Votre commande</h2>
+          <h2 className="font-bold text-[var(--color-on-surface)]">{tr("order.summary")}</h2>
           <div className="space-y-3 max-h-64 overflow-y-auto">
             {items.map((item) => (
               <div key={item.product.id} className="flex justify-between text-sm">
@@ -157,20 +159,20 @@ export default function CommandeClient() {
           </div>
           <div className="border-t border-[var(--color-border-subtle)] pt-4 space-y-2 text-sm">
             <div className="flex justify-between text-[var(--color-on-surface-variant)]">
-              <span>Sous-total</span>
+              <span>{tr("order.subtotal")}</span>
               <span>{total.toFixed(2)} د.م.</span>
             </div>
             <div className="flex justify-between text-[var(--color-on-surface-variant)]">
-              <span>Livraison</span>
+              <span>{tr("order.delivery")}</span>
               <span>
                 {shippingCost === 0
-                  ? <span className="text-[var(--color-success-green)] font-semibold">Gratuite</span>
+                  ? <span className="text-[var(--color-success-green)] font-semibold">{tr("order.free")}</span>
                   : `${shippingCost} د.م.`}
               </span>
             </div>
           </div>
           <div className="border-t border-[var(--color-border-subtle)] pt-4 flex justify-between font-bold text-[var(--color-on-surface)]">
-            <span>Total</span>
+            <span>{tr("order.total")}</span>
             <span className="text-[var(--color-primary)] text-lg">{orderTotal.toFixed(2)} د.م.</span>
           </div>
         </div>

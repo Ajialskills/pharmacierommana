@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
+import { getT } from "@/lib/server-translations";
 
 export const metadata: Metadata = {
   title: "Pharmacie Rommana — Parapharmacie en ligne à Tétouan",
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 import HeroSection from "@/components/home/HeroSection";
 import CategoriesSection from "@/components/home/CategoriesSection";
 import BrandStrip from "@/components/home/BrandStrip";
+import PharmacyServicesCards from "@/components/pharmacy/PharmacyServicesCards";
 import QuickActionsGrid from "@/components/pharmacy/QuickActionsGrid";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
 import CarnetSection from "@/components/home/CarnetSection";
@@ -24,8 +26,9 @@ export const revalidate = 3600;
 
 export default async function HomePage() {
   const supabase = await createClient();
+  const t = await getT();
 
-  const [promoRes, testimonialsRes, categoriesRes, brandsRes, articlesRes] =
+  const [promoRes, testimonialsRes, categoriesRes, brandsRes, articlesRes, gardeRes] =
     await Promise.all([
       supabase
         .from("products")
@@ -57,6 +60,12 @@ export default async function HomePage() {
         .eq("is_published", true)
         .order("published_at", { ascending: false })
         .limit(9),
+      supabase
+        .from("pharmacie_de_garde")
+        .select("pdf_url")
+        .order("week_start_date", { ascending: false })
+        .limit(1)
+        .maybeSingle(),
     ]);
 
   const promoProducts: Product[] = promoRes.data ?? [];
@@ -64,6 +73,7 @@ export default async function HomePage() {
   const categories: Category[] = categoriesRes.data ?? [];
   const featuredBrands: Brand[] = brandsRes.data ?? [];
   const recentArticles = (articlesRes.data ?? []) as Pick<Article, "id" | "slug" | "title" | "excerpt" | "cover_image" | "published_at">[];
+  const gardeUrl = gardeRes.data?.pdf_url ?? null;
 
   return (
     <>
@@ -79,13 +89,13 @@ export default async function HomePage() {
                 id="promos-heading"
                 className="text-4xl font-bold uppercase tracking-normal text-[var(--color-on-background)]"
               >
-                Produits en promotion
+                {t("home.promotions")}
               </h2>
               <Link
                 href="/boutique?promo=true"
                 className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--color-primary)] hover:underline mt-3"
               >
-                Voir tout
+                {t("product.view_all")}
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
@@ -101,6 +111,7 @@ export default async function HomePage() {
       )}
 
 
+      <PharmacyServicesCards gardeUrl={gardeUrl} />
       <BrandStrip brands={featuredBrands} />
       <CarnetSection articles={recentArticles} />
       <TestimonialsSection testimonials={testimonials} />

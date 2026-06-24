@@ -29,7 +29,12 @@ export default function BrandStrip({ brands }: Props) {
         </Link>
       </div>
 
-      <div className="flex whitespace-nowrap select-none" aria-hidden="true">
+      <div
+        className="flex whitespace-nowrap select-none"
+        aria-hidden="true"
+        onMouseEnter={e => (e.currentTarget.querySelector<HTMLDivElement>('.animate-marquee')!.style.animationPlayState = 'paused')}
+        onMouseLeave={e => (e.currentTarget.querySelector<HTMLDivElement>('.animate-marquee')!.style.animationPlayState = 'running')}
+      >
         <div className="flex items-center gap-8 animate-marquee">
           {items.map((brand, i) => (
             <Link

@@ -6,10 +6,12 @@ import { useWishlist } from "@/components/wishlist/WishlistContext";
 import { createClient } from "@/lib/supabase/client";
 import ProductCard from "@/components/product/ProductCard";
 import PageHero from "@/components/layout/PageHero";
+import { useLanguage } from "@/contexts/LanguageContext";
 import type { Product } from "@/types";
 
 export default function FavorisPage() {
   const { ids, count } = useWishlist();
+  const { tr } = useLanguage();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -34,9 +36,9 @@ export default function FavorisPage() {
   return (
     <>
       <PageHero
-        title="Mes Favoris"
+        title={tr("header.wishlist")}
         subtitle={`${count} produit${count !== 1 ? "s" : ""} sauvegardé${count !== 1 ? "s" : ""}`}
-        crumbs={[{ label: "Favoris" }]}
+        crumbs={[{ label: tr("header.wishlist") }]}
       />
       <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-10">
 
@@ -45,9 +47,9 @@ export default function FavorisPage() {
           <svg className="mx-auto mb-6 opacity-20" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
           </svg>
-          <p className="text-[var(--color-on-surface-variant)] text-sm mb-6">Vous n&apos;avez pas encore de favoris.</p>
+          <p className="text-[var(--color-on-surface-variant)] text-sm mb-6">{tr("wishlist.empty")}</p>
           <Link href="/boutique" className="bg-[var(--color-primary)] text-white px-6 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-opacity">
-            Découvrir la boutique
+            {tr("wishlist.discover")}
           </Link>
         </div>
       ) : loading ? (

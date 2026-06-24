@@ -35,31 +35,37 @@ export default function CategoriesSection({ categories }: Props) {
             {tr("home.categories")}
           </h2>
         </div>
+      </div>
 
-        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-9 gap-6">
-          {topLevel.map((cat) => (
-            <Link
-              key={cat.id}
-              href={`/boutique/${cat.slug}`}
-              className="group relative overflow-hidden rounded-2xl aspect-[3/4] block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-primary)]"
-            >
-              {/* Photo */}
-              <img
-                src={CATEGORY_IMAGES[cat.slug] ?? FALLBACK_IMG}
-                alt=""
-                aria-hidden="true"
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-              {/* Label */}
-              <span className="absolute bottom-0 inset-x-0 p-3 text-white text-xs font-bold uppercase tracking-wide text-center leading-tight">
-                {trCat(cat.name, cat.slug)}
-              </span>
-            </Link>
-          ))}
+        {/* Marquee strip — full width */}
+        <div className="overflow-hidden [mask-image:linear-gradient(to_right,transparent,2%,black_6%,black_94%,transparent_98%,transparent)]">
+          <div
+            className="flex gap-4 animate-marquee hover:[animation-play-state:paused]"
+            style={{ width: "max-content" }}
+          >
+            {[...topLevel, ...topLevel].map((cat, i) => (
+              <Link
+                key={`${cat.id}-${i}`}
+                href={`/boutique/${cat.slug}`}
+                className="group relative overflow-hidden rounded-2xl flex-shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-primary)]"
+                style={{ width: "160px", height: "210px" }}
+              >
+                <img
+                  src={CATEGORY_IMAGES[cat.slug] ?? FALLBACK_IMG}
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                <span className="absolute bottom-0 inset-x-0 p-3 text-white text-xs font-bold uppercase tracking-wide text-center leading-tight">
+                  {trCat(cat.name, cat.slug)}
+                </span>
+              </Link>
+            ))}
+          </div>
         </div>
 
+      <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)]">
         <div className="mt-4 flex justify-end">
           <Link href="/categories" className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--color-primary)] hover:underline">
             {tr("general.see_all")}

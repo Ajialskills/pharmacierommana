@@ -4,18 +4,20 @@ import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/components/cart/CartContext";
 import PageHero from "@/components/layout/PageHero";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function PanierPage() {
   const { items, remove, update, total, count } = useCart();
+  const { tr } = useLanguage();
 
   if (items.length === 0) {
     return (
       <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-20 text-center">
         <svg className="mx-auto mb-6 opacity-20" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-        <h1 className="text-xl font-bold text-[var(--color-on-surface)] mb-2">Votre panier est vide</h1>
+        <h1 className="text-xl font-bold text-[var(--color-on-surface)] mb-2">{tr("cart.empty")}</h1>
         <p className="text-[var(--color-on-surface-variant)] text-sm mb-8">Découvrez notre boutique pour trouver vos produits.</p>
         <Link href="/boutique" className="bg-[var(--color-primary)] text-white px-6 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-opacity">
-          Aller à la boutique
+          {tr("cart.continue")}
         </Link>
       </div>
     );
@@ -27,9 +29,9 @@ export default function PanierPage() {
   return (
     <>
       <PageHero
-        title="Mon Panier"
+        title={tr("cart.title")}
         subtitle={`${count} article${count > 1 ? "s" : ""}`}
-        crumbs={[{ label: "Panier" }]}
+        crumbs={[{ label: tr("cart.title") }]}
       />
       <div style={{ maxWidth: "var(--spacing-max-width)" }} className="mx-auto px-[var(--spacing-lg)] py-10">
 
@@ -38,7 +40,7 @@ export default function PanierPage() {
         <div className="lg:col-span-2 space-y-4">
           {remaining > 0 && (
             <div className="bg-[color-mix(in_srgb,var(--color-primary)_8%,transparent)] border border-[color-mix(in_srgb,var(--color-primary)_20%,transparent)] rounded-xl px-4 py-3 text-sm text-[var(--color-primary)]">
-              Plus que <strong>{remaining.toFixed(2)} د.م.</strong> pour la livraison gratuite sur Tétouan
+              {tr("cart.free_delivery_left", { amount: remaining.toFixed(2) })}
             </div>
           )}
 
@@ -66,7 +68,7 @@ export default function PanierPage() {
                       <button onClick={() => update(item.product.id, item.quantity + 1)} className="px-3 py-1.5 hover:bg-[var(--color-background-soft)] text-sm transition-colors">+</button>
                     </div>
                     <p className="text-sm font-bold text-[var(--color-on-surface)]">{(price * item.quantity).toFixed(2)} د.م.</p>
-                    <button onClick={() => remove(item.product.id)} className="ml-auto text-xs text-[var(--color-error)] hover:underline">Retirer</button>
+                    <button onClick={() => remove(item.product.id)} className="ml-auto text-xs text-[var(--color-error)] hover:underline">{tr("cart.remove")}</button>
                   </div>
                 </div>
               </div>
@@ -77,33 +79,33 @@ export default function PanierPage() {
         {/* Summary */}
         <div className="lg:col-span-1">
           <div className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-6 sticky top-28 space-y-4">
-            <h2 className="font-bold text-[var(--color-on-surface)]">Récapitulatif</h2>
+            <h2 className="font-bold text-[var(--color-on-surface)]">{tr("order.summary")}</h2>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between text-[var(--color-on-surface-variant)]">
-                <span>Sous-total</span>
+                <span>{tr("order.subtotal")}</span>
                 <span>{total.toFixed(2)} د.م.</span>
               </div>
               <div className="flex justify-between text-[var(--color-on-surface-variant)]">
-                <span>Livraison</span>
+                <span>{tr("features.delivery_label")}</span>
                 <span>
                   {total >= FREE_DELIVERY_THRESHOLD
-                    ? <span className="text-[var(--color-success-green)] font-semibold">Gratuite</span>
+                    ? <span className="text-[var(--color-success-green)] font-semibold">{tr("order.free")}</span>
                     : "Calculée à la commande"}
                 </span>
               </div>
             </div>
             <div className="border-t border-[var(--color-border-subtle)] pt-4 flex justify-between font-bold text-[var(--color-on-surface)]">
-              <span>Total</span>
+              <span>{tr("cart.total")}</span>
               <span className="text-[var(--color-primary)]">{total.toFixed(2)} د.م.</span>
             </div>
             <Link
               href="/commande"
               className="block w-full bg-[var(--color-primary)] text-white text-center py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition-opacity"
             >
-              Commander
+              {tr("cart.checkout")}
             </Link>
             <Link href="/boutique" className="block w-full text-center text-sm text-[var(--color-on-surface-variant)] hover:text-[var(--color-primary)] transition-colors">
-              Continuer les achats
+              {tr("cart.continue")}
             </Link>
           </div>
         </div>

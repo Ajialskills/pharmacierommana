@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Category, Brand } from "@/types";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Props {
   categories: Category[];
@@ -17,6 +18,7 @@ const PRICE_MAX = 2000;
 export default function BoutiqueFilters({ categories, brands }: Props) {
   const router = useRouter();
   const params = useSearchParams();
+  const { tr } = useLanguage();
 
   const activeCategory = params.get("categorie");
   const activeBrand = params.get("marque");
@@ -80,7 +82,7 @@ export default function BoutiqueFilters({ categories, brands }: Props) {
           onClick={() => { setSelectedParent(""); setPriceMin(PRICE_MIN); setPriceMax(PRICE_MAX); router.push("/boutique"); }}
           className="text-xs font-semibold text-[var(--color-primary)] hover:underline"
         >
-          ← Réinitialiser les filtres
+          ← {tr("boutique.reset_filters")}
         </button>
       )}
 
@@ -92,12 +94,12 @@ export default function BoutiqueFilters({ categories, brands }: Props) {
           onChange={(e) => update("promo", e.target.checked ? "1" : null)}
           className="w-4 h-4 accent-[var(--color-primary)]"
         />
-        <span className="text-xs font-semibold text-[var(--color-on-surface)]">Offres spéciales</span>
+        <span className="text-xs font-semibold text-[var(--color-on-surface)]">{tr("boutique.on_sale")}</span>
       </label>
 
       {/* Categories */}
       <div>
-        <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-on-surface-variant)] mb-2">Catégories</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-on-surface-variant)] mb-2">{tr("nav.categories")}</p>
         <div className="space-y-2">
           <div className="relative">
             <select value={selectedParent} onChange={(e) => onParentChange(e.target.value)} className={selectCls}>
@@ -131,7 +133,7 @@ export default function BoutiqueFilters({ categories, brands }: Props) {
 
       {/* Marques */}
       <div>
-        <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-on-surface-variant)] mb-2">Marques</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-on-surface-variant)] mb-2">{tr("nav.brands")}</p>
         <div className="relative">
           <select
             value={activeBrand ?? ""}

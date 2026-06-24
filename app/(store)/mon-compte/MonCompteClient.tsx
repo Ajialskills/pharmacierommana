@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import type { UserOrder } from "@/app/actions/order";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type Tab = "overview" | "orders" | "profile" | "security";
 
@@ -13,17 +14,18 @@ interface Props {
   orders: UserOrder[];
 }
 
-const TABS: { id: Tab; label: string }[] = [
-  { id: "overview", label: "Aperçu" },
-  { id: "orders", label: "Commandes" },
-  { id: "profile", label: "Profil" },
-  { id: "security", label: "Sécurité" },
-];
-
 export default function MonCompteClient({ user, orders }: Props) {
   const router = useRouter();
+  const { tr } = useLanguage();
   const [tab, setTab] = useState<Tab>("overview");
   const [loading, setLoading] = useState(false);
+
+  const TABS: { id: Tab; label: string }[] = [
+    { id: "overview", label: tr("account.tab_overview") },
+    { id: "orders", label: tr("account.tab_orders") },
+    { id: "profile", label: tr("account.tab_profile") },
+    { id: "security", label: tr("account.tab_security") },
+  ];
 
   async function handleSignOut() {
     setLoading(true);
@@ -63,7 +65,7 @@ export default function MonCompteClient({ user, orders }: Props) {
           disabled={loading}
           className="text-sm font-semibold text-[var(--color-on-surface-variant)] hover:text-[var(--color-error)] transition-colors disabled:opacity-50"
         >
-          Se déconnecter
+          {tr("auth.logout")}
         </button>
       </div>
 
@@ -114,7 +116,7 @@ export default function MonCompteClient({ user, orders }: Props) {
           {orders.length === 0 ? (
             <div className="bg-white border border-[var(--color-border-subtle)] rounded-2xl p-10 text-center">
               <p className="text-sm text-[var(--color-on-surface-variant)]">
-                Vous n&apos;avez pas encore passé de commande.
+                {tr("account.no_orders")}
               </p>
             </div>
           ) : (
