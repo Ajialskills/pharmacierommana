@@ -22,7 +22,7 @@ export default function PageHero({ title, subtitle, crumbs }: Props) {
         <nav aria-label="Fil d'Ariane" className="mb-3">
           <ol className="flex flex-wrap items-center gap-1.5 text-xs text-[var(--color-on-surface-variant)]">
             <li>
-              <Link href="/" className="hover:text-[var(--color-primary)] transition-colors">
+              <Link href="/accueil" className="hover:text-[var(--color-primary)] transition-colors">
                 Accueil
               </Link>
             </li>

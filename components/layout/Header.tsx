@@ -42,7 +42,7 @@ export default async function Header() {
         {/* Main bar */}
         <div className="w-full px-8 h-20 flex items-center gap-6">
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0">
+          <Link href="/accueil" className="flex-shrink-0">
             <Image
               src="/Logo Rommana.png"
               alt="Pharmacie Rommana"
