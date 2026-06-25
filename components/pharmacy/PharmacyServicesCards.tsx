@@ -6,8 +6,8 @@ interface Props {
   gardeUrl: string | null;
 }
 
-const cardClass = "group relative overflow-hidden rounded-3xl flex flex-col items-center justify-center text-center p-8 gap-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl";
-const cardSize = { width: "340px", height: "220px", flexShrink: 0 } as const;
+const cardClass = "group relative overflow-hidden rounded-3xl flex flex-col items-center justify-center text-center p-8 gap-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl w-full sm:w-auto sm:flex-1 lg:flex-none min-h-[200px] lg:h-[220px]";
+const cardStyle = { maxWidth: "380px", flexShrink: 0 } as const;
 
 export default function PharmacyServicesCards({ gardeUrl }: Props) {
   const { tr } = useLanguage();
@@ -16,10 +16,10 @@ export default function PharmacyServicesCards({ gardeUrl }: Props) {
     <section aria-label="Services pharmacie" className="py-10 bg-white">
       <div
         style={{ maxWidth: "1920px" }}
-        className="mx-auto px-[var(--spacing-lg)] flex items-center gap-6"
+        className="mx-auto px-[var(--spacing-lg)] flex flex-col sm:flex-row items-stretch gap-4 lg:gap-6"
       >
-        {/* Promo banner — left */}
-        <div className="flex-1 min-w-0 h-[220px] rounded-3xl border-2 border-dashed border-[var(--color-border-subtle)] flex flex-col items-center justify-center gap-2 text-[var(--color-on-surface-variant)] bg-[var(--color-surface-container-low)]">
+        {/* Promo banner — left (desktop only) */}
+        <div className="hidden lg:flex flex-1 min-w-0 h-[220px] rounded-3xl border-2 border-dashed border-[var(--color-border-subtle)] flex-col items-center justify-center gap-2 text-[var(--color-on-surface-variant)] bg-[var(--color-surface-container-low)]">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-40">
             <rect x="3" y="3" width="18" height="18" rx="2" />
             <path d="M3 9h18M9 21V9" />
@@ -34,7 +34,7 @@ export default function PharmacyServicesCards({ gardeUrl }: Props) {
             target="_blank"
             rel="noopener noreferrer"
             className={`${cardClass} peer`}
-            style={{ background: "linear-gradient(140deg, #991b1b 0%, #ef4444 55%, #fca5a5 100%)", ...cardSize }}
+            style={{ background: "linear-gradient(140deg, #991b1b 0%, #ef4444 55%, #fca5a5 100%)", ...cardStyle }}
           >
             <div className="absolute -top-6 -right-6 w-36 h-36 rounded-full bg-white/10 transition-transform duration-500 group-hover:scale-110" />
             <div className="absolute -bottom-8 -left-4 w-28 h-28 rounded-full bg-black/10" />
@@ -69,8 +69,8 @@ export default function PharmacyServicesCards({ gardeUrl }: Props) {
           </a>
         ) : (
           <div
-            className="relative overflow-hidden rounded-3xl flex flex-col items-center justify-center text-center p-8 gap-4 opacity-60 cursor-default"
-            style={{ background: "linear-gradient(140deg, #991b1b 0%, #ef4444 55%, #fca5a5 100%)", ...cardSize }}
+            className="relative overflow-hidden rounded-3xl flex flex-col items-center justify-center text-center p-8 gap-4 opacity-60 cursor-default w-full sm:w-auto sm:flex-1 lg:flex-none min-h-[200px] lg:h-[220px]"
+            style={{ background: "linear-gradient(140deg, #991b1b 0%, #ef4444 55%, #fca5a5 100%)", ...cardStyle }}
           >
             <div className="absolute -top-6 -right-6 w-36 h-36 rounded-full bg-white/10" />
             <div className="absolute -bottom-8 -left-4 w-28 h-28 rounded-full bg-black/10" />
@@ -95,7 +95,7 @@ export default function PharmacyServicesCards({ gardeUrl }: Props) {
           target="_blank"
           rel="noopener noreferrer"
           className={cardClass}
-          style={{ background: "linear-gradient(140deg, #047857 0%, #10b981 55%, #6ee7b7 100%)", ...cardSize }}
+          style={{ background: "linear-gradient(140deg, #047857 0%, #10b981 55%, #6ee7b7 100%)", ...cardStyle }}
         >
           <div className="absolute -top-6 -right-6 w-36 h-36 rounded-full bg-white/10 transition-transform duration-500 group-hover:scale-110" />
           <div className="absolute -bottom-8 -left-4 w-28 h-28 rounded-full bg-black/10" />
@@ -113,8 +113,8 @@ export default function PharmacyServicesCards({ gardeUrl }: Props) {
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
           </div>
         </a>
-        {/* Promo banner — right */}
-        <div className="flex-1 min-w-0 h-[220px] rounded-3xl border-2 border-dashed border-[var(--color-border-subtle)] flex flex-col items-center justify-center gap-2 text-[var(--color-on-surface-variant)] bg-[var(--color-surface-container-low)]">
+        {/* Promo banner — right (desktop only) */}
+        <div className="hidden lg:flex flex-1 min-w-0 h-[220px] rounded-3xl border-2 border-dashed border-[var(--color-border-subtle)] flex-col items-center justify-center gap-2 text-[var(--color-on-surface-variant)] bg-[var(--color-surface-container-low)]">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-40">
             <rect x="3" y="3" width="18" height="18" rx="2" />
             <path d="M3 9h18M9 21V9" />
