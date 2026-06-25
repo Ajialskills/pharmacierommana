@@ -19,7 +19,7 @@ export default function PharmacyServicesCards({ gardeUrl }: Props) {
         className="mx-auto px-[var(--spacing-lg)] flex items-center gap-6"
       >
         {/* Promo banner — left */}
-        <div style={{ width: "560px", flexShrink: 0 }} className="h-[220px] rounded-3xl border-2 border-dashed border-[var(--color-border-subtle)] flex flex-col items-center justify-center gap-2 text-[var(--color-on-surface-variant)] bg-[var(--color-surface-container-low)]">
+        <div className="flex-1 min-w-0 h-[220px] rounded-3xl border-2 border-dashed border-[var(--color-border-subtle)] flex flex-col items-center justify-center gap-2 text-[var(--color-on-surface-variant)] bg-[var(--color-surface-container-low)]">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-40">
             <rect x="3" y="3" width="18" height="18" rx="2" />
             <path d="M3 9h18M9 21V9" />
@@ -114,7 +114,7 @@ export default function PharmacyServicesCards({ gardeUrl }: Props) {
           </div>
         </a>
         {/* Promo banner — right */}
-        <div style={{ width: "560px", flexShrink: 0 }} className="h-[220px] rounded-3xl border-2 border-dashed border-[var(--color-border-subtle)] flex flex-col items-center justify-center gap-2 text-[var(--color-on-surface-variant)] bg-[var(--color-surface-container-low)]">
+        <div className="flex-1 min-w-0 h-[220px] rounded-3xl border-2 border-dashed border-[var(--color-border-subtle)] flex flex-col items-center justify-center gap-2 text-[var(--color-on-surface-variant)] bg-[var(--color-surface-container-low)]">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-40">
             <rect x="3" y="3" width="18" height="18" rx="2" />
             <path d="M3 9h18M9 21V9" />
