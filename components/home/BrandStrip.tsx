@@ -13,7 +13,7 @@ export default function BrandStrip({ brands }: Props) {
   const { tr } = useLanguage();
   if (brands.length === 0) return null;
 
-  const items = [...brands, ...brands];
+  const items = [...brands, ...brands, ...brands];
 
   return (
     <section aria-labelledby="brands-strip-heading" className="py-10 bg-white border-y border-[var(--color-border-subtle)] overflow-hidden">
